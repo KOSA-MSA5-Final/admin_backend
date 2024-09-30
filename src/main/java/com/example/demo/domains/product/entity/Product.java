@@ -46,6 +46,21 @@ public class Product {
     @JoinColumn(name = "animal_id")
     private Animal animal;
 
+    @Column(name = "product_origin")
+    private String origin;
+
+    @Column(name = "product_all_rawmaterial")
+    private String all_rawmaterial;
+
+    @Column(name = "product_ingredient")
+    private String ingredient;
+
+    @Column(name = "product_calories")
+    private String calories;
+
+    @Column(name = "product_weight")
+    private String weight;
+
     // RawMaterial(원료) 다대다 관계 설정
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<RawMaterialsProduct> rawMaterials;  // ProductRawMaterial과 1대다 관계
