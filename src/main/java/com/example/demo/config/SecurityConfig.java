@@ -61,6 +61,8 @@ public class SecurityConfig  {
                 .cors(withDefaults()) // CORS 활성화 (Vue.js와 통신하기 위함)
                 .authorizeHttpRequests(auth -> auth     //인증, 인가 설정
                         .requestMatchers("/auth/login", "/auth/register", "/oauth2/**").permitAll()   // 로그인 및 회원가입 경로는 인증 불필요 // OAuth2 경로 허용
+                        .requestMatchers("/login").permitAll() // 로그인 페이지 접근 허용
+                        .requestMatchers("/admin/**").permitAll() // 관리자 페이지 접근 허용
                         .anyRequest().authenticated()  // 그 외의 모든 요청은 인증 필요
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))  // 세션 비활성화, JWT 사용
