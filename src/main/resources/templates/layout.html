@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!--    <meta name="_csrf_header" th:content="${_csrf.headerName}">-->
+<!--    <meta name="_csrf" th:content="${_csrf.token}">-->
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}">
+    <!-- CSS -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="/css/footer.css">
+    <title>Hello</title>
+</head>
+<body>
+
+<!-- 네비게이션 바 Fragment -->
+<nav th:replace="navbar :: navbarFragment"></nav>
+
+
+<!-- 메인 컨텐츠 Fragment -->
+    <div class="col-md" id="content-container">
+        <!-- 상속되는 페이지에서 채워질 콘텐츠 -->
+        <th:block layout:fragment="content"></th:block>
+    </div>
+
+<script th:src="@{/js/jquery-3.7.1.min.js}"></script>
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/sortable.min.js}"></script>
+<script th:src="@{/js/popper.min.js}"></script>
+
+
+<!--chat JS-->
+<script th:src="@{/js/stomp.min.js}"></script>
+<script th:src="@{/js/sockjs.min.js}"></script>
+<script th:src="@{/js/axios.min.js}"></script>
+<script th:src="@{/js/sort.js}"></script>
+<script th:src="@{/js/addSharpToStr.js}"></script>
+
+</body>
+</html>

@@ -33,12 +33,12 @@ public class AllergyServiceTest {
         allergy1 = new Allergy();
         allergy1.setId(1);
         allergy1.setName("Peanut");
-        allergy1.setSymptoms("Hives");
+        allergy1.setType("1");
 
         allergy2 = new Allergy();
         allergy2.setId(2);
         allergy2.setName("Shellfish");
-        allergy2.setSymptoms("Swelling");
+        allergy2.setType("2");
     }
 
     @Test

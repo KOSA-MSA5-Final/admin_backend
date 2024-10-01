@@ -31,4 +31,7 @@ public class Hospital {
 
     @Column(name = "is_ours")
     String is_ours;
+
+    @Column(name = "phone_number")
+    String phone_number;
 }

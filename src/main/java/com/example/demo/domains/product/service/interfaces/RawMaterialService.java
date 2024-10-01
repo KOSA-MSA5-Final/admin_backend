@@ -1,5 +1,7 @@
 package com.example.demo.domains.product.service.interfaces;
 
+import com.example.demo.domains.product.entity.Allergy;
+import com.example.demo.domains.product.entity.Product;
 import com.example.demo.domains.product.entity.RawMaterial;
 
 import java.util.List;
@@ -17,7 +19,18 @@ import java.util.List;
  */
 
 public interface RawMaterialService {
+    // Create a new RawMaterial
+    RawMaterial createRawMaterial(Product product, Allergy allergy);
+
+    // Get RawMaterial by ID
+    RawMaterial getRawMaterialById(Long id);
+
+    // Get all RawMaterials
     List<RawMaterial> getAllRawMaterials();
-    RawMaterial saveRawMaterial(String name, String type);
+
+    // Update RawMaterial
+    RawMaterial updateRawMaterial(Long id, Product product, Allergy allergy);
+
+    // Delete RawMaterial by ID
     void deleteRawMaterial(Long id);
 }

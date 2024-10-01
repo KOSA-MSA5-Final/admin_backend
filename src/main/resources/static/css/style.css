@@ -1,0 +1,67 @@
+@font-face {
+    font-family: 'GmarketSansMedium';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'HancomMalangMalang-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2406-1@1.0/HancomMalangMalang-Regular.woff2') format('woff2');
+    font-weight: 400; /* Regular 굵기 */
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'HancomMalangMalang-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2406-1@1.0/HancomMalangMalang-Regular.woff2') format('woff2');
+    font-weight: 700; /* Bold 굵기 */
+    font-style: normal;
+}
+
+body, p, h1, h2, h3, h4, h5, h6, a {
+    font-family: 'GmarketSansMedium', sans-serif; /* 기본 폰트로 GmarketSansMedium 사용 */
+}
+
+.nav-pills {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap; /* 항목들이 줄바꿈되지 않도록 설정 */
+    white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+    padding: 0;
+    margin: 0;
+}
+
+.nav-pills .nav-item {
+    flex: 1; /* 항목들이 동일한 비율로 공간을 차지하도록 설정 */
+    text-align: center; /* 항목들을 가운데 정렬 */
+    margin-right: 100px;
+}
+
+.nav-pills .nav-link {
+    font-size: 1.25rem; /* 글씨 크기 설정 */
+}
+
+/* 반응형 디자인을 위해 화면 크기에 따라 간격을 조절 */
+@media (max-width: 1200px) {
+    .nav-pills .nav-item {
+        margin-right: 50px; /* 화면이 좁아질 때 간격을 줄임 */
+    }
+
+    .user-profile button {
+        padding: 8px 8px;
+    }
+
+    .user-profile button .profile-logo {
+        width: 25px;
+        height: 25px;
+        margin-right: 8px;
+    }
+}
+
+.mgng-name {
+    font-family: 'HancomMalangMalang-Regular', sans-serif;
+    font-size: 2rem; /* 글씨 크기 설정 */
+    font-weight: 700; /* 두께 700 적용 */
+    margin-left: 15px;
+}

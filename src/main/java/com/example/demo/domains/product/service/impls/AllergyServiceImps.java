@@ -31,10 +31,10 @@ public class AllergyServiceImps implements AllergyService {
     }
 
     @Override
-    public Allergy saveAllergy(String name, String symptoms) {
+    public Allergy saveAllergy(String name, String type) {
         Allergy allergy = new Allergy();
         allergy.setName(name);
-        allergy.setSymptoms(symptoms);
+        allergy.setType(type);
         return allergyRepository.save(allergy);
     }
 

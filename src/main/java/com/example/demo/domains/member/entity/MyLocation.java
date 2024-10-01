@@ -32,4 +32,10 @@ public class MyLocation {
     private Member member;
 
     private String isPrimary;
+
+    @Column(name = "receipient_name")
+    private String receipientName;
+
+    @Column(name = "receipient_tellNum")
+    private String receipientTellNum;
 }
