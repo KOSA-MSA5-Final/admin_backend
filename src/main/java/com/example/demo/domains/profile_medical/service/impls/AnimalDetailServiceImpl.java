@@ -35,13 +35,19 @@ public class AnimalDetailServiceImpl implements AnimalDetailService {
     @Override
     public AnimalDetail save(String name, String animalName) {
         Animal animal = animalRepository.findAnimalByName(animalName);
-        if(animal != null) {
-            AnimalDetail animalDetail = new AnimalDetail();
-            animalDetail.setName(name);
-            animalDetail.setAnimal(animal);
-            return animalDetailRepository.save(animalDetail);
+        if (animal == null) {
+            System.out.println("존재하지 않는 대분류 동물입니다: " + animalName);
+            return null;
         }
-        return null;
+        // 소분류 동물 이름과 대분류 동물로 중복 확인
+        if (animalDetailRepository.existsByNameAndAnimal(name, animal)) {
+            System.out.println("동물 소분류가 이미 존재합니다: " + name);
+            return null; // 중복일 경우 null 반환 (또는 예외 발생)
+        }
+        AnimalDetail animalDetail = new AnimalDetail();
+        animalDetail.setName(name);
+        animalDetail.setAnimal(animal);
+        return animalDetailRepository.save(animalDetail);
     }
 
     @Override

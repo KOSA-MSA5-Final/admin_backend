@@ -17,7 +17,12 @@ import java.util.List;
  * DATE            AUTHOR             NOTE
  * —————————————————————————————
  * 2024-09-24         최혜령          최초 생성
+ * 2024-10-01         김진석          중복 확인 jpa 추가
  */
 public interface AnimalDetailRepository extends JpaRepository<AnimalDetail, Long>, AnimalDetailRepositoryCustom {
+
+    // 소분류 이름과 대분류 동물로 중복 확인
+    Boolean existsByNameAndAnimal(String name, Animal animal);
+
     List<AnimalDetail> findByAnimal(Animal animal);
 }

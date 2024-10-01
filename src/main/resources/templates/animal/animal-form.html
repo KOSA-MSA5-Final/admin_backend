@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animal Management</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <style>
+        body {
+            font-family: 'GmarketSansMedium', sans-serif;
+        }
+        .form-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content" class="container">
+    <h1 class="text-center my-4">동물 관리 페이지</h1>
+
+    <!-- 동물 대분류 추가 폼 -->
+    <div class="form-container">
+        <h3>대분류 동물 추가</h3>
+        <form th:action="@{/admin/animal/add/animal}" method="post">
+            <div class="mb-3">
+                <label for="animalName" class="form-label">대분류 동물명</label>
+                <input type="text" class="form-control" id="animalName" name="animalName" placeholder="동물 종류를 입력하세요." required>
+            </div>
+            <button type="submit" class="btn btn-primary">추가</button>
+        </form>
+    </div>
+
+    <!-- 동물 소분류 추가 폼 -->
+    <div class="form-container mt-4">
+        <h3>소분류 동물 추가</h3>
+        <form th:action="@{/admin/animal/add/animalDetail}" method="post">
+            <div class="mb-3">
+                <label for="animalDetailName" class="form-label">소분류 동물명</label>
+                <input type="text" class="form-control" id="animalDetailName" name="animalDetailName" placeholder="품종을 입력하세요." required>
+            </div>
+            <div class="mb-3">
+                <label for="animalName" class="form-label">대분류 동물 선택</label>
+                <select class="form-select" id="animalName" name="animalName" required>
+                    <option value="" disabled selected>대분류 동물을 선택하세요</option>
+                    <option th:each="animal : ${animals}" th:value="${animal.name}" th:text="${animal.name}"></option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">추가</button>
+        </form>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    /* 메시지를 서버에서 전달받은 경우 alert로 표시 */
+    /*[[${message}]]*/ let message = /*[[${message}]]*/ 'null';
+    /*[[${alertType}]]*/ let alertType = /*[[${alertType}]]*/ 'null';
+
+    // JavaScript에서 'null' 문자열을 실제 null 값으로 변경
+    if (message === 'null') {
+        message = null;
+    }
+    if (alertType === 'null') {
+        alertType = null;
+    }
+
+    // 메시지가 있는 경우 alert 표시
+    if (message !== null && alertType !== null) {
+        alert(message); // JavaScript alert로 메시지 출력
+    }
+</script>
+</body>
+</html>
