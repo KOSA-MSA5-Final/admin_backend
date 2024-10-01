@@ -28,7 +28,7 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id")
-    private int id;
+    private long id;
 
     @Column(name = "product_name")
     private String name;
@@ -42,27 +42,30 @@ public class Product {
     @Column(name = "product_price")
     private long price;
 
+    // animal 과 다대 1 관계
     @ManyToOne
     @JoinColumn(name = "animal_id")
     private Animal animal;
 
-    // RawMaterial(원료) 다대다 관계 설정
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    private List<RawMaterialsProduct> rawMaterials;  // ProductRawMaterial과 1대다 관계
+    @Column(name = "product_origin")
+    private String origin;
 
-    // ProductDetailImage 1대다 관계 설정
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    private List<ProductDetailImg> detailImgs;
+    @Column(name = "product_all_rawmaterial")
+    private String all_rawmaterial;
 
-    // ProductImage 1대다 관계 설정
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    private List<ProductImg> images;
+    @Column(name = "product_ingredient")
+    private String ingredient;
 
-    // Ingredient 1대다 관계 설정
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    private List<Ingredient> ingerdients;
+    @Column(name = "product_calories")
+    private String calories;
 
-    // Efficacy 1대다 관계 설정
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    private List<Efficacy> efficacies;
+    @Column(name = "product_weight")
+    private String weight;
+
+    @Column(name = "product_age_group")
+    private String age_group;
+
+    @Column(name = "product_function")
+    private String function;
+
 }

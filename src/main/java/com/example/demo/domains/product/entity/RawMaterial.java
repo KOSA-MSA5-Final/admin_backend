@@ -8,6 +8,7 @@
  * DATE            AUTHOR             NOTE
  * —————————————————————————————
  * 2024-09-24         윤다희          최초 생성
+ * 2024-10-01         윤다희          join 로 변경
  */
 package com.example.demo.domains.product.entity;
 
@@ -26,18 +27,14 @@ public class RawMaterial {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "rawmaterial_id")
-    private int id;
+    private long id;
 
-    @Column(name = "rawmaterial_name")
-    private String name;
+    @ManyToOne
+    @JoinColumn(name = "product_id")  // Product 외래 키
+    private Product product;
 
-    @Column(name = "rawmaterial_type")
-    private String type;
-
-    @OneToMany(mappedBy = "rawMaterial", cascade = CascadeType.ALL)
-    private List<RawMaterialsProduct> products;  // ProductRawMaterial과 1대다 관계
-
-    @OneToMany(mappedBy = "rawMaterial", cascade = CascadeType.ALL)
-    private List<AllergyRawMaterial> allergys;  // AllergyRawMaterial과 1대다 관계
+    @ManyToOne
+    @JoinColumn(name = "allergy_id")  // RawMaterial 외래 키
+    private Allergy allergy;
 
 }
