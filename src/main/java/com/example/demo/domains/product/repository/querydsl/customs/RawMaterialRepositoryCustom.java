@@ -10,6 +10,7 @@ package com.example.demo.domains.product.repository.querydsl.customs;
  * DATE            AUTHOR             NOTE
  * —————————————————————————————
  * 2024-09-24         윤다희          최초 생성
+ * 2024-10-01         윤다희          원료 join 테이블화
  */
 
 public interface RawMaterialRepositoryCustom {

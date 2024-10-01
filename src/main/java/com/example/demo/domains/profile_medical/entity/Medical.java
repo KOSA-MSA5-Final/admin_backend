@@ -30,7 +30,13 @@ public class Medical {
     @Column(name="receipt_img_url")
     private String receipt_img;
 
+    @Column(name = "object")
+    private String object;
+
     @ManyToOne
     @JoinColumn(name = "profile_id")
     private Profile profile;
+
+    @Column(name = "total_cost")
+    private long totalCost;
 }

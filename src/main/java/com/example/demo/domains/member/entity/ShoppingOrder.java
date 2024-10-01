@@ -28,7 +28,7 @@ public class ShoppingOrder {
     private long id;
 
     @Column
-    private double totalPrice;
+    private long totalPrice;
 
     @Column
     private String isAllShipping;//모든품목배송여부

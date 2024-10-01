@@ -32,13 +32,9 @@ public class RawMaterialServiceTest {
     public void setUp() {
         rawMaterial1 = new RawMaterial();
         rawMaterial1.setId(1);
-        rawMaterial1.setName("Raw Material 1");
-        rawMaterial1.setType("Type 1");
 
         rawMaterial2 = new RawMaterial();
         rawMaterial2.setId(2);
-        rawMaterial2.setName("Raw Material 2");
-        rawMaterial2.setType("Type 2");
     }
 
     @Test
