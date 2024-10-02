@@ -20,4 +20,7 @@ public interface DiseaseNamesRepository extends JpaRepository<DiseaseNames, Long
 
     // 기본적으로 대분류 병명을 이름으로 검색
     DiseaseNames findByName(String name);
+
+    // 이름을 기준으로 중복 확인 메서드
+    Boolean existsByName(String name);
 }

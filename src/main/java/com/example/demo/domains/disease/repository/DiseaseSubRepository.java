@@ -25,6 +25,9 @@ public interface DiseaseSubRepository extends JpaRepository<DiseaseSub, Long>, D
 
     // 소분류 병명을 이름으로 조회
     List<DiseaseSub> findAllByName(String name);
+
+    // 이름과 대분류 ID를 기준으로 중복 확인 메서드
+    Boolean existsByNameAndDiseaseNames_Id(String name, Long diseaseNameId);
 }
 
 
