@@ -18,6 +18,7 @@ import java.util.Map;
  * DATE            AUTHOR             NOTE
  * —————————————————————————————
  * 2024-09-24         최혜령          최초 생성
+ * 2024-10-01         김진석          중복 생성 검사 추가
  */
 @Service
 @RequiredArgsConstructor

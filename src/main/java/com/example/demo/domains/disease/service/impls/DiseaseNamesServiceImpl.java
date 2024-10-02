@@ -41,6 +41,11 @@ public class DiseaseNamesServiceImpl implements DiseaseNamesService {
     @Override
     @Transactional
     public DiseaseNames saveDisease(DiseaseNames diseaseNames) {
+        // 중복 확인 로직 추가
+        if (diseaseNamesRepository.existsByName(diseaseNames.getName())) {
+            System.out.println("대분류 병명이 이미 존재합니다: " + diseaseNames.getName());
+            return null; // 중복일 경우 null 반환 (또는 예외 발생)
+        }
         return diseaseNamesRepository.save(diseaseNames);
     }
 

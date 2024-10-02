@@ -51,7 +51,7 @@ public class SecurityConfig  {
     @Bean
     public WebSecurityCustomizer configure(){
         return (web) -> web.ignoring()
-                .requestMatchers("/static/**", "/css/**", "/js/**", "/images/**", "/favicon.ico"); // 추가적인 경로 허용
+                .requestMatchers("/static/**", "/css/**", "/js/**", "/images/**"); // 추가적인 경로 허용, "/favicon.ico"
     }
 
     @Bean //csrf, cors관련 설정 여기서 해야함

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disease Management</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <style>
+        body {
+            font-family: 'GmarketSansMedium', sans-serif;
+        }
+
+        .form-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content" class="container">
+    <h1 class="text-center my-4">병명 Data 추가</h1>
+
+    <!-- 대분류 병명 추가 폼 -->
+    <div class="form-container">
+        <h3>대분류 병명 추가</h3>
+        <form id="diseaseForm" th:action="@{/admin/disease/add/disease}" method="post">
+            <div class="mb-3">
+                <label for="diseaseName" class="form-label">질환 부위</label>
+                <input type="text" class="form-control" id="diseaseName" name="diseaseName" placeholder="질환 부위를 입력하세요" required>
+            </div>
+            <button type="submit" class="btn btn-primary">추가</button>
+        </form>
+    </div>
+
+    <!-- 소분류 병명 추가 폼 -->
+    <div class="form-container mt-4">
+        <h3>소분류 병명 추가</h3>
+        <form id="subDiseaseForm" th:action="@{/admin/disease/add/diseaseSub}" method="post">
+            <div class="mb-3">
+                <label for="subDiseaseName" class="form-label">병명 이름</label>
+                <input type="text" class="form-control" id="subDiseaseName" name="subDiseaseName" placeholder="해당 부위의 병명을 입력하세요." required>
+            </div>
+            <div class="mb-3">
+                <label for="diseaseName" class="form-label">질환 부위 선택</label>
+                <select class="form-select" id="diseaseName" name="diseaseName" required>
+                    <option value="" disabled selected>질환 부위를 선택하세요.</option>
+                    <option th:each="disease : ${diseaseNames}" th:value="${disease.name}" th:text="${disease.name}"></option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">추가</button>
+        </form>
+    </div>
+</div>
+
+<script th:inline="javascript">
+    $(document).ready(function() {
+        // 대분류 병명 추가 AJAX
+        $('#diseaseForm').on('submit', function(event) {
+            event.preventDefault(); // 기본 폼 제출 이벤트 방지
+            $.ajax({
+                url: /*[[@{/admin/disease/add/disease}]]*/, // AJAX 요청을 보낼 URL
+                method: 'POST',
+                data: {
+                    diseaseName: $('#diseaseName').val()
+                },
+                success: function(response) {
+                    alert("대분류 병명이 성공적으로 추가되었습니다.");
+                    // 필요시 폼 초기화
+                    $('#diseaseName').val('');
+                },
+                error: function(xhr, status, error) {
+                    alert("오류 발생: " + xhr.responseText);
+                }
+            });
+        });
+
+        // 소분류 병명 추가 AJAX
+        $('#subDiseaseForm').on('submit', function(event) {
+            event.preventDefault(); // 기본 폼 제출 이벤트 방지
+            $.ajax({
+                url: /*[[@{/admin/disease/add/diseaseSub}]]*/, // AJAX 요청을 보낼 URL
+                method: 'POST',
+                data: {
+                    subDiseaseName: $('#subDiseaseName').val(),
+                    diseaseName: $('#diseaseNameSelect').val()
+                },
+                success: function(response) {
+                    alert("소분류 병명이 성공적으로 추가되었습니다.");
+                    // 필요시 폼 초기화
+                    $('#subDiseaseName').val('');
+                    $('#diseaseNameSelect').prop('selectedIndex', 0); // 드롭다운 초기화
+                },
+                error: function(xhr, status, error) {
+                    alert("오류 발생: " + xhr.responseText);
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

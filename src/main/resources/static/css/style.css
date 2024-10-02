@@ -13,8 +13,8 @@
 }
 
 @font-face {
-    font-family: 'HancomMalangMalang-Regular';
-    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2406-1@1.0/HancomMalangMalang-Regular.woff2') format('woff2');
+    font-family: 'HancomMalangMalang-ExtraBold';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2406-1@1.0/HancomMalangMalang-ExtraBold.woff2') format('woff2');
     font-weight: 700; /* Bold 굵기 */
     font-style: normal;
 }
@@ -59,9 +59,43 @@ body, p, h1, h2, h3, h4, h5, h6, a {
     }
 }
 
-.mgng-name {
+.navbar-brand {
     font-family: 'HancomMalangMalang-Regular', sans-serif;
     font-size: 2rem; /* 글씨 크기 설정 */
     font-weight: 700; /* 두께 700 적용 */
     margin-left: 15px;
+}
+
+/* 작은 화면에서 네비게이션 메뉴가 보이도록 설정 */
+@media (max-width: 992px) {
+    .nav-pills .nav-item {
+        margin-right: 20px; /* 화면이 더 좁아질 때 간격을 줄임 */
+    }
+
+    .user-profile button {
+        padding: 6px 6px;
+    }
+
+    .user-profile button .profile-logo {
+        width: 20px;
+        height: 20px;
+        margin-right: 6px;
+    }
+}
+
+@media (max-width: 768px) {
+    .nav-pills .nav-item {
+        margin-right: 10px; /* 화면이 더 좁아질 때 간격을 줄임 */
+        flex: 1 0 100%; /* 항목들을 한 줄에 배치 */
+    }
+
+    .user-profile button {
+        padding: 4px 4px;
+    }
+
+    .user-profile button .profile-logo {
+        width: 15px;
+        height: 15px;
+        margin-right: 4px;
+    }
 }

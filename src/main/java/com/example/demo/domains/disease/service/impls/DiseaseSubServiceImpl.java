@@ -47,6 +47,11 @@ public class DiseaseSubServiceImpl implements DiseaseSubService {
     @Override
     @Transactional
     public DiseaseSub saveDiseaseSub(DiseaseSub diseaseSub) {
+        // 대분류 ID와 소분류 이름으로 중복 확인
+        if (diseaseSubRepository.existsByNameAndDiseaseNames_Id(diseaseSub.getName(), diseaseSub.getDiseaseNames().getId())) {
+            System.out.println("소분류 병명이 이미 존재합니다: " + diseaseSub.getName());
+            return null; // 중복일 경우 null 반환 (또는 예외 발생)
+        }
         return diseaseSubRepository.save(diseaseSub);
     }
 
