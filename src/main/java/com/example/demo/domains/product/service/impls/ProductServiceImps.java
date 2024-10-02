@@ -34,13 +34,7 @@ public class ProductServiceImps implements ProductService {
     }
 
     @Override
-    public Product saveProduct(String name, String maker, String type, long price, Animal animal) {
-        Product product = new Product();
-        product.setName(name);
-        product.setMaker(maker);
-        product.setType(type);
-        product.setPrice(price);
-        product.setAnimal(animal);
+    public Product saveProduct(Product product) {
         return productRepository.save(product);
     }
 

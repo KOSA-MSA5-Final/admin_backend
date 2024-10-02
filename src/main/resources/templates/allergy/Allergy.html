@@ -4,12 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Animal Page</title>
+    <title>버튼 클릭 로그</title>
+    <script>
+        function logMessage() {
+            console.log("버튼이 클릭되었습니다!");
+        }
+    </script>
 </head>
 <body>
 <div layout:fragment="content" class="container my-3">
-    <h1>알러지 페이지</h1>
-    <p>여기에 동물 관련 내용을 작성하세요.</p>
+<button onclick="logMessage()">클릭하세요!</button>
 </div>
 </body>
 </html>

@@ -16,7 +16,7 @@ import java.util.List;
  */
 public interface HospitalService {
     Hospital saveFromUser(Long reg_num, String name, String doctorName, String address);
-    Hospital saveByAdmin(Long reg_num, String name, String doctorName, String address);
+    Hospital saveByAdmin(Long reg_num, String name, String doctorName, String address, String phonNum, String isOurs);
     Boolean delete(Hospital hospital);
     List<Hospital> getAll();
     List<Hospital> getOurHospitalsByCurrentLocation(String location);

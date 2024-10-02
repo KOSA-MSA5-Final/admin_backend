@@ -42,7 +42,7 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public Profile save(String name, Integer age, Member member, AnimalDetail animalDetail) {
+    public Profile save(String name, Integer age, Member member, AnimalDetail animalDetail, String pictureUrl) {
         Profile profile = new Profile();
         profile.setName(name);
         profile.setAge(age);

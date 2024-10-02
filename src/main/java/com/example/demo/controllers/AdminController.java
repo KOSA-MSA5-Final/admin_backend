@@ -1,13 +1,22 @@
 package com.example.demo.controllers;
 
+import com.example.demo.domains.profile_medical.entity.Hospital;
+import com.example.demo.domains.profile_medical.service.impls.HospitalServiceImpl;
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/admin")
+@RequiredArgsConstructor
 public class AdminController {
+
+    private final HospitalServiceImpl hospitalService;
 
     @GetMapping
     public String adminPage(HttpSession session) {
@@ -54,11 +63,15 @@ public class AdminController {
     }
 
     @GetMapping("/hospital")
-    public String hospitalPage(HttpSession session) {
+    public String hospitalPage(Model model, HttpSession session) {
         // 세션에 user 속성이 없는 경우 로그인 페이지로 리다이렉트
         if (session.getAttribute("user") == null) {
             return "redirect:/login";
         }
+
+        List<Hospital> hospitals = hospitalService.getAll();
+        model.addAttribute("hospitals", hospitals);
+
         return "/hospital/Hospital"; // Hospital.html 페이지로 이동
     }
 }
