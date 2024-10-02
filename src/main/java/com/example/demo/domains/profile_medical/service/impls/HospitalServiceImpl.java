@@ -41,7 +41,7 @@ public class HospitalServiceImpl implements HospitalService {
     }
 
     @Override
-    public Hospital saveByAdmin(Long reg_num, String name, String doctorName, String address) {
+    public Hospital saveByAdmin(Long reg_num, String name, String doctorName, String address, String phonNum, String isOurs) {
         Optional<Hospital> h = hospitalRepository.findById(reg_num);
         if (!h.isPresent()) {
             Hospital hospital = new Hospital();
@@ -49,7 +49,8 @@ public class HospitalServiceImpl implements HospitalService {
             hospital.setName(name);
             hospital.setDoctor(doctorName);
             hospital.setAddress(address);
-            hospital.setIs_ours("T");
+            hospital.setPhone_number(phonNum);
+            hospital.setIs_ours(isOurs);
             return hospitalRepository.save(hospital);
         } else {
             return null;
@@ -79,5 +80,9 @@ public class HospitalServiceImpl implements HospitalService {
     @Override
     public List<Hospital> getAllOurHospitals() {
         return hospitalRepository.findOurHospitals();
+    }
+
+    public Hospital getHospitalById(Long reg_num) {
+        return hospitalRepository.findById(reg_num).get();
     }
 }

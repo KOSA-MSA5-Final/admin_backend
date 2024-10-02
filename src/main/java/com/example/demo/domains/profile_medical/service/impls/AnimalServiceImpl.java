@@ -55,4 +55,8 @@ public class AnimalServiceImpl implements AnimalService {
     public Map<Animal, Integer> countProfilesByAnimal() {
         return animalRepository.countProfilesByAnimal();
     }
+
+    public Animal findAnimalByName(String name) {
+        return animalRepository.findAnimalByName(name);
+    }
 }

@@ -24,6 +24,6 @@ public interface MedicalService {
     List<Medical> getAllMedicalsByVisitDate(Date visitDate);
 
     List<Medical> getAllMedicals();
-    Medical save(Date utcDate, String receipt_img, Profile profile);
+    Medical save(Date utcDate, String receipt_img, String object, Profile profile, Long totalCost);
     Boolean delete(Medical medical);
 }

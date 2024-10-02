@@ -21,6 +21,6 @@ public interface ProfileService {
     List<Profile> getProfilesByMember(Member member);
     List<Medical> getMedicalsByMember(Member member);
     List<Profile> getAllProfiles();
-    Profile save(String name, Integer age, Member member, AnimalDetail animalDetail);
+    Profile save(String name, Integer age, Member member, AnimalDetail animalDetail, String pictureUrl);
     Boolean delete(Profile profile);
 }

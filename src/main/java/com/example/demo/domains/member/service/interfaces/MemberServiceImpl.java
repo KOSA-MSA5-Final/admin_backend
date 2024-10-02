@@ -39,6 +39,7 @@ public class MemberServiceImpl implements MemberService {
         String password = joinDTO.getPassword();
         String name = joinDTO.getName();
         String email = joinDTO.getEmail();
+        String telNumber = joinDTO.getTelNumber();
 
         Boolean isExist = memberRepository.existsByUsername(username);
 
@@ -52,6 +53,7 @@ public class MemberServiceImpl implements MemberService {
         data.setUsername(username);
         data.setName(name);
         data.setEmail(email);
+        data.setTelNum(telNumber);
         data.setPassword(bCryptPasswordEncoder.encode(password));
         data.setRole("ROLE_ADMIN");
 

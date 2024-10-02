@@ -57,7 +57,7 @@ public class MedicalServiceImpl implements MedicalService {
     }
 
     @Override
-    public Medical save(Date utcDate, String receipt_img, Profile profile) {
+    public Medical save(Date utcDate, String receipt_img, String object, Profile profile, Long totalCost) {
         Medical medical = new Medical();
         medical.setProfile(profile);
         medical.setReceipt_img(receipt_img);
