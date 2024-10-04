@@ -1,5 +1,6 @@
 package com.example.demo.domains.product.repository.querydsl.impls;
 
+import com.example.demo.domains.product.entity.Product;
 import com.example.demo.domains.product.entity.ProductImg;
 import com.example.demo.domains.product.repository.ProductImgRepository;
 import com.example.demo.domains.product.repository.querydsl.customs.ProductImgRepositoryCustom;
@@ -24,4 +25,16 @@ import java.util.List;
 public class ProductImgRepositoryImpl implements ProductImgRepositoryCustom {
 
     private final EntityManager em;
+
+
+    @Override
+    public List<String> findByProduct(Product product) {
+        // JPQL 쿼리를 작성하여 ProductImg 엔티티에서 이미지 URL을 조회
+        String jpql = "SELECT pi.imageUrl FROM ProductImg pi WHERE pi.product = :product";
+
+        // 쿼리 실행
+        return em.createQuery(jpql, String.class)
+                .setParameter("product", product)
+                .getResultList();
+    }
 }

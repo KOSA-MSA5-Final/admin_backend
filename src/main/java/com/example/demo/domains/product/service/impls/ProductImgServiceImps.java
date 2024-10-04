@@ -44,4 +44,8 @@ public class ProductImgServiceImps implements ProductImgService {
     public void deleteProductImg(long id) {
         productImgRepository.deleteById(id);
     }
+
+    public List<String> getImageUrlsByProduct(Product product) {
+        return productImgRepository.findByProduct(product);
+    }
 }

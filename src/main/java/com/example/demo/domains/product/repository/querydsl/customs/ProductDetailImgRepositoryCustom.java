@@ -1,5 +1,9 @@
 package com.example.demo.domains.product.repository.querydsl.customs;
 
+import com.example.demo.domains.product.entity.Product;
+
+import java.util.List;
+
 /**
  * author : 윤다희
  * date : 2024-09-24
@@ -13,4 +17,5 @@ package com.example.demo.domains.product.repository.querydsl.customs;
  */
 
 public interface ProductDetailImgRepositoryCustom {
+    List<String> findByProduct(Product product);
 }

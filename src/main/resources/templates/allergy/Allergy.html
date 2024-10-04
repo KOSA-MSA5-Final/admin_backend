@@ -4,16 +4,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>버튼 클릭 로그</title>
-    <script>
-        function logMessage() {
-            console.log("버튼이 클릭되었습니다!");
-        }
-    </script>
+    <title>Allergy Page</title>
 </head>
 <body>
 <div layout:fragment="content" class="container my-3">
-<button onclick="logMessage()">클릭하세요!</button>
+    <h1>알러지 페이지</h1>
+    <p>여기에 알러지 관련 내용을 작성하세요.</p>
+    <a href="/admin/allergy/add" class="btn btn-info">알러지 추가 페이지로 이동</a>
+
+    <!-- 병원 리스트 -->
+    <h3 class="mt-4">알러지 리스트</h3>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>알러지 이름</th>
+            <th>알러지 대분류</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Thymeleaf 반복문을 사용하여 병원 리스트 출력 -->
+        <tr th:each="allergy : ${allergies}">
+            <td th:text="${allergy.name}">사업자 등록 번호</td>
+            <td th:text="${allergy.type}">병원 이름</td>
+            <td>
+                <!-- 삭제 버튼 추가 -->
+                <form th:action="@{'/admin/allergy/delete/' + ${allergy.id}}" method="post">
+                    <input type="hidden" name="_method" value="delete"/> <!-- DELETE 요청을 위한 hidden input -->
+                    <button type="submit" class="btn btn-danger">삭제</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
 </div>
 </body>
 </html>

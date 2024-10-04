@@ -42,4 +42,8 @@ public class ProductServiceImps implements ProductService {
     public void deleteProduct(long id) {
         productRepository.deleteById(id);
     }
+
+    public Product getProductById(Long id) {
+        return productRepository.findById(id).orElse(null);
+    }
 }
