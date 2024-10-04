@@ -6,18 +6,17 @@ import com.example.demo.domains.product.service.impls.ProductImgServiceImps;
 import com.example.demo.domains.product.service.impls.ProductServiceImps;
 import com.example.demo.domains.product.service.interfaces.ProductService;
 import com.example.demo.domains.profile_medical.entity.Animal;
+import com.example.demo.domains.profile_medical.entity.Hospital;
 import com.example.demo.domains.profile_medical.service.impls.AnimalServiceImpl;
 import org.springframework.ui.Model;
 import com.example.demo.domains.profile_medical.service.interfaces.AnimalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -52,9 +51,14 @@ public class ProductController {
                              String productWeight,
                              String productAge,
                              String productFunction,
-                             ArrayList<String> imageUrlList, // 수정된 부분
-                             ArrayList<String> detailImageUrlList, // 수정된 부분
+                             String productImageUrls,
+                             String productDetailImageUrls,
                              RedirectAttributes redirectAttributes) {
+
+        // 이미지 URL들을 콤마로 분리하여 List<String>으로 변환
+        String[] imageUrlList = productImageUrls.split(",");
+        String[] detailImageUrlList = productDetailImageUrls.split(",");
+
         // 새로운 Product 객체 생성
         Product product = new Product();
         product.setName(productName);
@@ -82,15 +86,66 @@ public class ProductController {
         }
 
         for(String img : imageUrlList){
-            System.out.println(img+"**********************************************************");
             productImgService.saveProductImg(img, saveProduct);
         }
 
         for(String detailImg : detailImageUrlList){
-            System.out.println(detailImg+"**********************************************************");
             productDetailImgService.saveProductDetailImg(detailImg, saveProduct);
         }
 
         return "redirect:/admin/product";
     }
+
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
+    public String deleteHospital(@PathVariable Long id) {
+        productService.deleteProduct(id);
+        return "redirect:/admin/product";
+    }
+
+    // 상품 상세 페이지
+    @GetMapping("/details/{id}")
+    public String getProductDetails(@PathVariable("id") Long id, Model model) {
+        Product product = productService.getProductById(id); // ID로 상품 조회
+        List<String> imageUrls = productImgService.getImageUrlsByProduct(product); // 이미지 URL 목록 가져오기
+        List<String> imageDetailUrls = productDetailImgService.getDetailImgsUrlsByProduct(product);
+        if (product != null) {
+            model.addAttribute("product", product); // 모델에 조회한 상품 추가
+            model.addAttribute("imageUrls", imageUrls); // 이미지 URL 목록 추가
+            model.addAttribute("imageDetailUrls", imageDetailUrls); // 이미지 URL 목록 추가
+            return "product/product-detail"; // productDetails.html 뷰로 이동
+        } else {
+            return "redirect:/admin/product"; // 상품을 찾지 못하면 리스트 페이지로 리다이렉트
+        }
+    }
+
+    @GetMapping("/edit/{id}")
+    public String editProduct(@PathVariable Long id, Model model) {
+        Product product = productService.getProductById(id); // ID로 상품 조회
+        List<String> imageUrls = productImgService.getImageUrlsByProduct(product); // 이미지 URL 목록 가져오기
+        List<String> imageDetailUrls = productDetailImgService.getDetailImgsUrlsByProduct(product);
+        if (product != null) {
+            model.addAttribute("product", product); // 모델에 조회한 상품 추가
+            model.addAttribute("animals", animalService.getAllAnimals());
+            model.addAttribute("imageUrls", imageUrls); // 이미지 URL 목록 추가
+            model.addAttribute("imageDetailUrls", imageDetailUrls); // 이미지 URL 목록 추가
+
+            // List<String>을 쉼표로 묶어서 하나의 문자열로 변환
+            String imageUrlString = String.join(",", imageUrls);
+            String imageDetailUrlString = String.join(",", imageDetailUrls);
+
+            model.addAttribute("productImageUrls", imageUrlString);
+            model.addAttribute("productDetailImageUrls", imageDetailUrlString);
+
+            return "product/product-edit"; // edit.html
+        } else {
+            return "redirect:/admin/product"; // 상품을 찾지 못하면 리스트 페이지로 리다이렉트
+        }
+    }
+
+    @PostMapping("/update")
+    public String updateProduct(@ModelAttribute Product product) {
+        //productService.update(product);
+        return "redirect:/admin/product"; // 수정 후 상품 목록으로 리디렉션
+    }
+
 }

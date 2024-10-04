@@ -1,5 +1,9 @@
 package com.example.demo.controllers;
 
+import com.example.demo.domains.product.entity.Allergy;
+import com.example.demo.domains.product.entity.Product;
+import com.example.demo.domains.product.service.impls.AllergyServiceImps;
+import com.example.demo.domains.product.service.impls.ProductServiceImps;
 import com.example.demo.domains.profile_medical.entity.Hospital;
 import com.example.demo.domains.profile_medical.service.impls.HospitalServiceImpl;
 import jakarta.servlet.http.HttpSession;
@@ -17,6 +21,8 @@ import java.util.List;
 public class AdminController {
 
     private final HospitalServiceImpl hospitalService;
+    private final ProductServiceImps productService;
+    private final AllergyServiceImps allergyService;
 
     @GetMapping
     public String adminPage(HttpSession session) {
@@ -45,20 +51,28 @@ public class AdminController {
     }
 
     @GetMapping("/allergy")
-    public String allergyPage(HttpSession session) {
+    public String allergyPage(Model model, HttpSession session) {
         // 세션에 user 속성이 없는 경우 로그인 페이지로 리다이렉트
         if (session.getAttribute("user") == null) {
             return "redirect:/login";
         }
+
+        List<Allergy> allergies = allergyService.getAllAllergies();
+        model.addAttribute("allergies", allergies);
+
         return "/allergy/Allergy"; // Allergy.html 페이지로 이동
     }
 
     @GetMapping("/product")
-    public String productPage(HttpSession session) {
+    public String productPage(Model model, HttpSession session) {
         // 세션에 user 속성이 없는 경우 로그인 페이지로 리다이렉트
         if (session.getAttribute("user") == null) {
             return "redirect:/login";
         }
+
+        List<Product> products = productService.getAllProducts();
+        model.addAttribute("product", products);
+
         return "/product/Product"; // Product.html 페이지로 이동
     }
 

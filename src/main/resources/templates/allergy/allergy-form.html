@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/html">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Allergy Management</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+  <style>
+    body {
+      font-family: 'GmarketSansMedium', sans-serif;
+    }
+    .form-container {
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body>
+<div layout:fragment="content" class="container">
+  <h1 class="text-center my-4">알러지 추가</h1>
+
+  <!-- 동물 소분류 추가 폼 -->
+  <div class="form-container mt-4">
+    <h3>소분류 동물 추가</h3>
+    <form th:action="@{/admin/allergy/add/allergy}" method="post">
+      <div class="mb-3">
+        <label for="allergyName" class="form-label">알러지 이름</label>
+        <input type="text" class="form-control" id="allergyName" name="allergyName" placeholder="알러지 이름을 입력하세요." required>
+      </div>
+      <div class="mb-3">
+        <label for="allergyType" class="form-label">알러지 대분류</label>
+        <select class="form-select" id="allergyType" name="allergyType" required>
+          <option value="" disabled selected>알러지 대분류를 선택하세요</option>
+          <option >과일</option>
+          <option >곡류</option>
+          <option >고기</option>
+          <option >우유, 계란</option>
+          <option >해산물</option>
+          <option >야채</option>
+          <option >효모</option>
+          <option >기타</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary">추가</button>
+    </form>
+  </div>
+</div>
+
+<script th:inline="javascript">
+  /* 메시지를 서버에서 전달받은 경우 alert로 표시 */
+  /*[[${message}]]*/ let message = /*[[${message}]]*/ 'null';
+  /*[[${alertType}]]*/ let alertType = /*[[${alertType}]]*/ 'null';
+
+  // JavaScript에서 'null' 문자열을 실제 null 값으로 변경
+  if (message === 'null') {
+    message = null;
+  }
+  if (alertType === 'null') {
+    alertType = null;
+  }
+
+  // 메시지가 있는 경우 alert 표시
+  if (message !== null && alertType !== null) {
+    alert(message); // JavaScript alert로 메시지 출력
+  }
+</script>
+</body>
+</html>

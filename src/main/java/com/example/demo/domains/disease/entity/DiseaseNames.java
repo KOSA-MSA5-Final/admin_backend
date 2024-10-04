@@ -30,11 +30,11 @@ public class DiseaseNames {
     private String name;
 
     // 대분류와 소분류는 1대다 관계
-    @OneToMany(mappedBy = "diseaseNames", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "diseaseNames", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<DiseaseSub> diseaseSubs;
 
     // 대분류와 새로운 병명은 1대다 관계
-    @OneToMany(mappedBy = "diseaseNames", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "diseaseNames", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private List<NewDisease> newDiseases;
 
 }
