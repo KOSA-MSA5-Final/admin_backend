@@ -17,5 +17,5 @@ import java.util.List;
 
 public interface DiseaseSubRepositoryCustom {
     // 커스텀 쿼리 또는 추가적인 조회 로직
-    List<DiseaseSub> findCustomDiseaseSubs(String condition);
+//    List<DiseaseSub> findCustomDiseaseSubs(String condition);
 }
