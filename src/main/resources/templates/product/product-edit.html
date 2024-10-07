@@ -125,7 +125,12 @@
       </div>
       <div class="mb-3">
         <label for="productType" class="form-label">상품 타입</label>
-        <input type="text" class="form-control" id="productType" name="productType" th:value="${product.type}" required>
+        <select class="form-control" id="productType" name="productType" required>
+          <option value="" disabled selected>상품 타입을 선택하세요.</option>
+          <option value="feed">사료</option>
+          <option value="snack">간식</option>
+          <option value="supplement">영양제</option>
+        </select>
       </div>
       <div class="mb-3">
         <label for="productPrice" class="form-label">상품 가격</label>

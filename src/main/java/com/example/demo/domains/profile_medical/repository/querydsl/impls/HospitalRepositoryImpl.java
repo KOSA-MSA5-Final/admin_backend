@@ -40,4 +40,13 @@ public class HospitalRepositoryImpl implements HospitalRepositoryCustom {
         return query.getResultList();
     }
 
+    @Override
+    public List<Hospital> findByIsOurs(String b) {
+        String jpql = "SELECT h FROM Hospital h WHERE h.is_ours = :isOurs";
+
+        TypedQuery<Hospital> query = em.createQuery(jpql, Hospital.class);
+        query.setParameter("isOurs", b);  // 파라미터 바인딩
+        return query.getResultList();
+    }
+
 }

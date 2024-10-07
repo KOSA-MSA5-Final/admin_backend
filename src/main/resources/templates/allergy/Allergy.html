@@ -12,7 +12,24 @@
     <p>여기에 알러지 관련 내용을 작성하세요.</p>
     <a href="/admin/allergy/add" class="btn btn-info">알러지 추가 페이지로 이동</a>
 
-    <!-- 병원 리스트 -->
+    <!-- 대분류 선택 드롭다운 -->
+    <h3 class="mt-4">알러지 대분류 선택</h3>
+    <form action="/admin/allergy" method="get">
+        <select name="type" class="form-control" onchange="this.form.submit()">
+            <option value="" disabled selected>선택</option>
+            <option value="">전체</option>
+            <option value="과일">과일</option>
+            <option value="곡류">곡류</option>
+            <option value="고기">고기</option>
+            <option value="우유, 계란">우유, 계란</option>
+            <option value="해산물">해산물</option>
+            <option value="야채">야채</option>
+            <option value="효모">효모</option>
+            <option value="기타">기타</option>
+        </select>
+    </form>
+
+    <!-- 알러지 리스트 -->
     <h3 class="mt-4">알러지 리스트</h3>
     <table class="table table-striped">
         <thead>
@@ -22,10 +39,9 @@
         </tr>
         </thead>
         <tbody>
-        <!-- Thymeleaf 반복문을 사용하여 병원 리스트 출력 -->
         <tr th:each="allergy : ${allergies}">
-            <td th:text="${allergy.name}">사업자 등록 번호</td>
-            <td th:text="${allergy.type}">병원 이름</td>
+            <td th:text="${allergy.name}">알러지 이름</td>
+            <td th:text="${allergy.type}">알러지 대분류</td>
             <td>
                 <!-- 삭제 버튼 추가 -->
                 <form th:action="@{'/admin/allergy/delete/' + ${allergy.id}}" method="post">
@@ -36,7 +52,6 @@
         </tr>
         </tbody>
     </table>
-
 </div>
 </body>
 </html>

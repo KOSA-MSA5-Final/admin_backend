@@ -4,41 +4,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Disease Page</title>
+    <title>Animal Page</title>
 </head>
 <body>
 <div layout:fragment="content" class="container my-3">
-    <h1>병명 리스트 페이지</h1>
+    <h1>동물 리스트 페이지</h1>
 
-    <!-- 대분류 병명 선택 -->
-    <h3 class="mt-4">대분류 병명 선택</h3>
+    <!-- 대분류 동물 선택 -->
+    <h3 class="mt-4">대분류 동물 선택</h3>
     <form action="sub" method="get">
         <select name="type" class="form-control" onchange="this.form.submit()">
             <option value="" disabled selected>대분류 선택</option>
             <option value="">전체</option>
-            <!-- 대분류 병명 리스트는 서버에서 받아온다 -->
-            <option th:each="disease : ${diseases}" th:value="${disease.id}" th:text="${disease.name}"></option>
+            <!-- 대분류 동물 리스트는 서버에서 받아온다 -->
+            <option th:each="category : ${animalCategories}" th:value="${category.name}" th:text="${category.name}"></option>
         </select>
     </form>
 
-
-    <!-- 소분류 병명 리스트 -->
-    <h3 class="mt-4">소분류 병명 리스트</h3>
+    <!-- 소분류 동물 리스트 -->
+    <h3 class="mt-4">소분류 동물 리스트</h3>
     <table class="table table-striped">
         <thead>
         <tr>
-            <th>대분류 병명</th>
-            <th>병명</th>
+            <th>대분류 동물</th>
+            <th>동물 이름</th>
         </tr>
         </thead>
         <tbody>
-        <!-- Thymeleaf 반복문을 사용하여 소분류 병명 리스트 출력 -->
+        <!-- Thymeleaf 반복문을 사용하여 소분류 동물 리스트 출력 -->
         <tr th:each="subcategory : ${subcategories}">
-            <td th:text="${subcategory.diseaseNames.name}">대분류 병명</td>
-            <td th:text="${subcategory.name}">소분류 병명 이름</td>
+            <td th:text="${subcategory.animal.name}">대분류 동물</td>
+            <td th:text="${subcategory.name}">소분류 동물 이름</td>
             <td>
                 <!-- 삭제 버튼 추가 -->
-                <form th:action="@{'/admin/disease/sub/delete/' + ${subcategory.id}}" method="post">
+                <form th:action="@{'/admin/animal/sub/delete/' + ${subcategory.id}}" method="post">
                     <input type="hidden" name="_method" value="delete"/> <!-- DELETE 요청을 위한 hidden input -->
                     <button type="submit" class="btn btn-danger">삭제</button>
                 </form>

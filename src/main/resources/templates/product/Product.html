@@ -11,6 +11,21 @@
     <h1>상품 페이지</h1>
     <p>여기에 상품 관련 내용을 작성하세요.</p>
     <a href="/admin/product/add" class="btn btn-info">상품 추가 페이지로 이동</a>
+    <a href="/admin/product/main" class="btn btn-info">상품 관리 페이지로 이동</a>
+
+    <!-- 카테고리 선택 드롭다운 -->
+    <div class="mt-4">
+        <label for="category">카테고리 선택:</label>
+        <form action="product" method="get">
+            <select id="category" name="category" class="form-control" onchange="this.form.submit()">
+                <option value="" th:selected="${selectedCategory == ''}" disabled selected>카테고리 선택</option>
+                <option value="all" th:selected="${selectedCategory == 'all'}">전체</option>
+                <option value="feed" th:selected="${selectedCategory == 'feed'}">사료</option>
+                <option value="snack" th:selected="${selectedCategory == 'snack'}">간식</option>
+                <option value="supplement" th:selected="${selectedCategory == 'supplement'}">영양제</option>
+            </select>
+        </form>
+    </div>
 
     <!-- 상품 리스트 -->
     <h3 class="mt-4">상품 리스트</h3>
@@ -23,7 +38,7 @@
         </tr>
         </thead>
         <tbody>
-        <!-- Thymeleaf 반복문을 사용하여 병원 리스트 출력 -->
+        <!-- Thymeleaf 반복문을 사용하여 필터링된 상품 리스트 출력 -->
         <tr th:each="product : ${product}">
             <td th:text="${product.id}">상품 ID</td>
             <td>

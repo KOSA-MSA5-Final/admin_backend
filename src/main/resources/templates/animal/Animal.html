@@ -11,6 +11,31 @@
     <h1>동물 페이지</h1>
     <p>여기에 동물 관련 내용을 작성하세요.</p>
     <a href="/admin/animal/add" class="btn btn-info">동물 추가 페이지로 이동</a>
+    <a href="/admin/animal/sub" class="btn btn-info">동물 소분류 리스트 페이지로 이동</a>
+
+    <!-- 동물 리스트 -->
+    <h3 class="mt-4">동물 리스트</h3>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>동물명</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Thymeleaf 반복문을 사용하여 동물 리스트 출력 -->
+        <tr th:each="animal : ${animals}">
+            <td th:text="${animal.name}">동물 이름</td>
+            <td>
+                <!-- 삭제 버튼 추가 -->
+                <form th:action="@{'/admin/animal/delete/' + ${animal.id}}" method="post">
+                    <input type="hidden" name="_method" value="delete"/> <!-- DELETE 요청을 위한 hidden input -->
+                    <button type="submit" class="btn btn-danger">삭제</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
 </div>
 </body>
 </html>

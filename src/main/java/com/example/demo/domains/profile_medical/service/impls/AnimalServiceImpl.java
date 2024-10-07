@@ -60,4 +60,8 @@ public class AnimalServiceImpl implements AnimalService {
     public Animal findAnimalByName(String name) {
         return animalRepository.findAnimalByName(name);
     }
+
+    public void deleteById(Long id) {
+        animalRepository.deleteById(id);
+    }
 }
