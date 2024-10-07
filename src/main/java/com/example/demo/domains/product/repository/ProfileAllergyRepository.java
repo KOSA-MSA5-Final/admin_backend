@@ -1,8 +1,11 @@
 package com.example.demo.domains.product.repository;
 
 import com.example.demo.domains.product.entity.ProfileAllergy;
+import com.example.demo.domains.profile_medical.entity.Profile;
 import com.example.demo.domains.product.repository.querydsl.customs.ProfileAllergyRepositoryCustom;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
 
 /**
  * author : 윤다희
@@ -17,4 +20,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 
 public interface ProfileAllergyRepository extends JpaRepository<ProfileAllergy, Long> , ProfileAllergyRepositoryCustom {
+    List<ProfileAllergy> findByProfile(Profile profile);
 }

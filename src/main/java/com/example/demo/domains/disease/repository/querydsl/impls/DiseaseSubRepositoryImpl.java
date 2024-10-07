@@ -24,12 +24,12 @@ public class DiseaseSubRepositoryImpl implements DiseaseSubRepositoryCustom {
 
     private final EntityManager em;
 
-    @Override
-    public List<DiseaseSub> findCustomDiseaseSubs(String condition) {
-        String jpql = "SELECT ds FROM DiseaseSub ds WHERE ds.name LIKE :condition";
-        TypedQuery<DiseaseSub> query = em.createQuery(jpql, DiseaseSub.class);
-        query.setParameter("condition", "%" + condition + "%");
-
-        return query.getResultList();
-    }
+//    @Override
+//    public List<DiseaseSub> findCustomDiseaseSubs(String condition) {
+//        String jpql = "SELECT ds FROM DiseaseSub ds WHERE ds.name LIKE :condition";
+//        TypedQuery<DiseaseSub> query = em.createQuery(jpql, DiseaseSub.class);
+//        query.setParameter("condition", "%" + condition + "%");
+//
+//        return query.getResultList();
+//    }
 }
