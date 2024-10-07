@@ -4,6 +4,7 @@ import com.example.demo.domains.disease.entity.DiseaseNames;
 import com.example.demo.domains.disease.entity.DiseaseSub;
 import com.example.demo.domains.disease.service.interfaces.DiseaseNamesService;
 import com.example.demo.domains.disease.service.interfaces.DiseaseSubService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -68,43 +69,40 @@ public class DiseaseController {
         return "redirect:/admin/disease/add";
     }
 
-    @GetMapping("/category/main")
-    public String getMainDiseaseList(Model model) {
-        List<DiseaseNames> mainDiseases = diseaseNamesService.findAllDiseases(); // 대분류 병명 리스트 가져오기
-        model.addAttribute("diseases", mainDiseases);
-        model.addAttribute("showDiseaseNames", false); // 대분류는 설명이 없으므로 false
-        return "disease/disease-list"; // 대분류 리스트 페이지로 이동
-    }
+    @GetMapping("/sub")
+    public String getSubDiseaseList(@RequestParam(required = false) Long type, Model model, HttpSession session) {
+        // 세션에 user 속성이 없는 경우 로그인 페이지로 리다이렉트
+        if (session.getAttribute("user") == null) {
+            return "redirect:/login";
+        }
+        List<DiseaseSub> subDiseases;
 
-    @GetMapping("/category/sub")
-    public String getSubDiseaseList(Model model) {
-        List<DiseaseSub> subDiseases = diseaseSubService.findAllDiseaseSubs(); // 소분류 병명 리스트 가져오기
-        model.addAttribute("diseases", subDiseases);
-        model.addAttribute("showDiseaseNames", true); // 소분류는 설명이 있으므로 true
+        if (type != null && type != 0) {
+            subDiseases = diseaseSubService.findSubDiseasesByDiseaseNameId(type);
+        } else {
+            subDiseases = diseaseSubService.findAllDiseaseSubs();
+        }
+
+        List<DiseaseNames> diseaseNames = diseaseNamesService.findAllDiseases();
+        model.addAttribute("subcategories", subDiseases);
+        model.addAttribute("diseases", diseaseNames);
         return "disease/disease-list"; // 소분류 리스트 페이지로 이동
     }
 
     @PostMapping("/delete/{id}")
-    public String deleteDisease(@PathVariable Long id,
-                                @RequestParam("category") String category,
-                                RedirectAttributes redirectAttributes) {
-        System.out.println("888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888");
-        try {
-            // 카테고리에 따라 삭제 로직 분기
-            if ("main".equals(category)) {
-                // 대분류 삭제 로직
-                diseaseNamesService.deleteDiseaseById(id);
-                redirectAttributes.addFlashAttribute("message", "대분류 병명이 성공적으로 삭제되었습니다.");
-            } else if ("sub".equals(category)) {
-                // 소분류 삭제 로직
-                diseaseSubService.deleteDiseaseSubById(id);
-                redirectAttributes.addFlashAttribute("message", "소분류 병명이 성공적으로 삭제되었습니다.");
-            }
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("errorMessage", "삭제 중 오류가 발생했습니다.");
-        }
+    public String deleteDisease(@PathVariable Long id) {
+        diseaseNamesService.deleteDiseaseById(id);
 
         // 카테고리에 따라 적절한 페이지로 리다이렉트
-        return "redirect:/admin/disease/category/" + category;
+        return "redirect:/admin/disease";
     }
+
+    // 소분류 병명 삭제
+    @PostMapping("/admin/disease/sub/delete/{id}")
+    public String deleteSubCategory(@PathVariable Long id) {
+        diseaseSubService.deleteDiseaseSubById(id);
+        return "redirect:/admin/disease/sub"; // 삭제 후 리스트 페이지로 리다이렉트
+    }
+
+
 }

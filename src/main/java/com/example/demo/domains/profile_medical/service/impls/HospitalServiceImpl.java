@@ -85,4 +85,8 @@ public class HospitalServiceImpl implements HospitalService {
     public Hospital getHospitalById(Long reg_num) {
         return hospitalRepository.findById(reg_num).get();
     }
+
+    public List<Hospital> findByIsOurs(String b) {
+        return hospitalRepository.findByIsOurs(b);
+    }
 }

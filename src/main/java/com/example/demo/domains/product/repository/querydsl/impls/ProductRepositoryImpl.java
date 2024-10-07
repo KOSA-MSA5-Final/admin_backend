@@ -24,4 +24,12 @@ import java.util.List;
 public class ProductRepositoryImpl implements ProductRepositoryCustom {
 
     private final EntityManager em;
+
+    @Override
+    public List<Product> findAllByType(String type) {
+        String jpql = "select p from Product p where p.type = :type";
+        return em.createQuery(jpql, Product.class)
+                .setParameter("type", type)
+                .getResultList();
+    }
 }

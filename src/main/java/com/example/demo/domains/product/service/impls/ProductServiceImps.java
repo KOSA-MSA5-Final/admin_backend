@@ -46,4 +46,8 @@ public class ProductServiceImps implements ProductService {
     public Product getProductById(Long id) {
         return productRepository.findById(id).orElse(null);
     }
+
+    public List<Product> findByType(String type) {
+        return productRepository.findAllByType(type);
+    }
 }
