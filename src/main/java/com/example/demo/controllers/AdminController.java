@@ -96,11 +96,11 @@ public class AdminController {
 
         // 선택된 카테고리에 따라 상품 필터링
         if ("feed".equals(category)) {
-            products = productService.findByType("사료");
+            products = productService.findByType("feed");
         } else if ("snack".equals(category)) {
-            products = productService.findByType("간식");
+            products = productService.findByType("snack");
         } else if ("supplement".equals(category)) {
-            products = productService.findByType("영양제");
+            products = productService.findByType("supplement");
         } else {
             products = productService.getAllProducts(); // 전체 상품
         }

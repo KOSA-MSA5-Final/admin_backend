@@ -53,6 +53,7 @@ public class ProductController {
                              String productFunction,
                              String productImageUrls,
                              String productDetailImageUrls,
+                             String productSubtype, // 상품 상세 타입 추가
                              RedirectAttributes redirectAttributes) {
 
         // 이미지 URL들을 콤마로 분리하여 List<String>으로 변환
@@ -64,6 +65,7 @@ public class ProductController {
         product.setName(productName);
         product.setMaker(productMaker);
         product.setType(productType);
+        product.setSubtype(productSubtype); // product의 상세 타입 설정
         product.setPrice(productPrice);
         Animal animal = animalService.findAnimalByName(animalName);
         product.setAnimal(animal);
