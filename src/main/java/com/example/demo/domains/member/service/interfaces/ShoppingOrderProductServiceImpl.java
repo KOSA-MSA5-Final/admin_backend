@@ -61,4 +61,8 @@ public class ShoppingOrderProductServiceImpl implements ShoppingOrderProductServ
             return false;
         }
     }
+
+    public long countByShippingStatus(String status) {
+        return shoppingOrderProductRepository.countByShippingStatus(status);
+    }
 }
