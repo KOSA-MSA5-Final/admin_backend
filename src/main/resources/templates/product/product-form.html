@@ -20,74 +20,15 @@
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
   </style>
-  <script>
-    // 이미지 URL 추가 함수
-    function addImageUrl() {
-      console.log("버튼 눌림");
-      const imageUrlInput = document.getElementById('productImageUrl');
-      const imageUrl = imageUrlInput.value.trim();
-
-      // URL이 비어있지 않은 경우에만 추가
-      if (imageUrl) {
-        // 리스트에 추가
-        const imageUrlList = document.getElementById('imageUrlList');
-        const listItem = document.createElement('li');
-        listItem.className = 'list-group-item';
-        listItem.textContent = imageUrl;
-        imageUrlList.appendChild(listItem);
-
-        // 입력 필드 비우기
-        imageUrlInput.value = '';
-
-        // 추가된 URL을 숨겨진 필드에 저장
-        const hiddenImageUrls = document.getElementById('hiddenImageUrls');
-        const existingUrls = hiddenImageUrls.value ? hiddenImageUrls.value.split(',') : [];
-        existingUrls.push(imageUrl);
-        hiddenImageUrls.value = existingUrls.join(',');
-      }
-    }
-
-    function addDetailImageUrl() {
-      console.log("버튼 눌림");
-      const imageUrlInput = document.getElementById('productDetailImageUrl');
-      const imageUrl = imageUrlInput.value.trim();
-
-      // URL이 비어있지 않은 경우에만 추가
-      if (imageUrl) {
-        // 리스트에 추가
-        const imageUrlList = document.getElementById('detailImageUrlList');
-        const listItem = document.createElement('li');
-        listItem.className = 'list-group-item';
-        listItem.textContent = imageUrl;
-        imageUrlList.appendChild(listItem);
-
-        // 입력 필드 비우기
-        imageUrlInput.value = '';
-
-        // 추가된 URL을 숨겨진 필드에 저장
-        const hiddenImageUrls = document.getElementById('hiddenDetailImageUrls');
-        const existingUrls = hiddenImageUrls.value ? hiddenImageUrls.value.split(',') : [];
-        existingUrls.push(imageUrl);
-        hiddenImageUrls.value = existingUrls.join(',');
-      }
-    }
-
-    // DOMContentLoaded 이벤트 리스너
-    document.addEventListener('DOMContentLoaded', function() {
-      document.getElementById('addImageButton').addEventListener('click', addImageUrl);
-      document.getElementById('addDetailImageButton').addEventListener('click', addDetailImageUrl);
-    });
-  </script>
-
 </head>
 <body>
 <div layout:fragment="content" class="container">
   <h1 class="text-center my-4">상품 관리 페이지</h1>
 
-  <!-- 병원 추가 폼 -->
+  <!-- 상품 추가 폼 -->
   <div class="form-container">
     <h3>상품 추가</h3>
-    <form th:action="@{/admin/product/add/product}" method="post">
+    <form id="productForm" th:action="@{/admin/product/add/product}" method="post" enctype="multipart/form-data">
       <div class="mb-3">
         <label for="productName" class="form-label">상품 이름</label>
         <input type="text" class="form-control" id="productName" name="productName" placeholder="상품 이름을 입력하세요." required>
@@ -112,7 +53,7 @@
       </div>
       <div class="mb-3">
         <label for="productPrice" class="form-label">상품 가격</label>
-        <input type="text" class="form-control" id="productPrice" name="productPrice" placeholder="상품 가격을 입력하세요." required>
+        <input type="number" class="form-control" id="productPrice" name="productPrice" placeholder="상품 가격을 입력하세요." required>
       </div>
 
       <!-- 동물 종류 리스트 -->
@@ -138,11 +79,11 @@
       </div>
       <div class="mb-3">
         <label for="productCalories" class="form-label">칼로리</label>
-        <input type="text" class="form-control" id="productCalories" name="productCalories" placeholder="상품 칼로리를 입력하세요." required>
+        <input type="number" class="form-control" id="productCalories" name="productCalories" placeholder="상품 칼로리를 입력하세요." required>
       </div>
       <div class="mb-3">
         <label for="productWeight" class="form-label">실 중량</label>
-        <input type="text" class="form-control" id="productWeight" name="productWeight" placeholder="상품 실 중량을 입력하세요." required>
+        <input type="number" class="form-control" id="productWeight" name="productWeight" placeholder="상품 실 중량을 입력하세요." required>
       </div>
       <div class="mb-3">
         <label for="productAge" class="form-label">연령대</label>
@@ -154,27 +95,13 @@
       </div>
 
       <div class="mb-3">
-        <label for="productImageUrl" class="form-label">이미지 추가</label>
-        <input type="text" class="form-control" id="productImageUrl" name="productImageUrl" placeholder="이미지 URL을 입력하세요.">
-        <button id="addImageButton" type="button">이미지 추가</button>
+        <label for="productImageUrls" class="form-label">이미지 업로드</label>
+        <input type="file" class="form-control" id="productImageUrls" name="productImageUrls" accept="image/*" multiple required>
       </div>
 
       <div class="mb-3">
-        <label for="imageUrlList" class="form-label">추가된 이미지</label>
-        <ul id="imageUrlList" class="list-group"></ul>
-        <input type="hidden" id="hiddenImageUrls" name="productImageUrls">
-      </div>
-
-      <div class="mb-3">
-        <label for="productDetailImageUrl" class="form-label">세부 이미지 추가</label>
-        <input type="text" class="form-control" id="productDetailImageUrl" name="productDetailImageUrl" placeholder="세부 이미지 URL을 입력하세요.">
-        <button id="addDetailImageButton" type="button">이미지 추가</button>
-      </div>
-
-      <div class="mb-3">
-        <label for="imageUrlList" class="form-label">추가된 세부 이미지</label>
-        <ul id="detailImageUrlList" class="list-group"></ul>
-        <input type="hidden" id="hiddenDetailImageUrls" name="productDetailImageUrls">
+        <label for="productDetailImageUrls" class="form-label">세부 이미지 업로드</label>
+        <input type="file" class="form-control" id="productDetailImageUrls" name="productDetailImageUrls" accept="image/*" multiple>
       </div>
 
       <button type="submit" class="btn btn-primary">추가</button>
