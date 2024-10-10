@@ -58,6 +58,10 @@ public class ProductController {
                              String productFunction,
                              List<MultipartFile> productImageUrls,
                              List<MultipartFile> productDetailImageUrls,
+                             //String productImageUrls,
+                             //String productDetailImageUrls,
+                             String productSubtype, // 상품 상세 타입 추가
+
                              RedirectAttributes redirectAttributes) {
 
         // 이미지 파일을 S3에 업로드하고 URL을 가져오는 로직
@@ -70,6 +74,7 @@ public class ProductController {
         product.setName(productName);
         product.setMaker(productMaker);
         product.setType(productType);
+        product.setSubtype(productSubtype); // product의 상세 타입 설정
         product.setPrice(productPrice);
         Animal animal = animalService.findAnimalByName(animalName);
         product.setAnimal(animal);
