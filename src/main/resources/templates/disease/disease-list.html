@@ -5,13 +5,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Disease Page</title>
+    <!-- Bootstrap CSS -->
+    <style>
+        body {
+            font-family: 'GmarketSansMedium', sans-serif;
+        }
+        .form-container {
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </head>
 <body>
 <div layout:fragment="content" class="container my-3">
     <h1>병명 리스트 페이지</h1>
 
-    <!-- 대분류 병명 선택 -->
-    <h3 class="mt-4">대분류 병명 선택</h3>
+    <!-- 소분류 병명 리스트 -->
+    <div class="form-container mt-4">
+    <h3 class="mt-4">소분류 병명 리스트</h3>
     <form action="sub" method="get">
         <select name="type" class="form-control" onchange="this.form.submit()">
             <option value="" disabled selected>대분류 선택</option>
@@ -20,10 +34,6 @@
             <option th:each="disease : ${diseases}" th:value="${disease.id}" th:text="${disease.name}"></option>
         </select>
     </form>
-
-
-    <!-- 소분류 병명 리스트 -->
-    <h3 class="mt-4">소분류 병명 리스트</h3>
     <table class="table table-striped">
         <thead>
         <tr>
@@ -46,6 +56,7 @@
         </tr>
         </tbody>
     </table>
+    </div>
 
 </div>
 </body>

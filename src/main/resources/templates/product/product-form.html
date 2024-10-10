@@ -6,13 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Product Management</title>
   <!-- Bootstrap CSS -->
-  <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
   <style>
     body {
       font-family: 'GmarketSansMedium', sans-serif;
     }
     .form-container {
-      max-width: 600px;
       margin: 50px auto;
       padding: 20px;
       border: 1px solid #ccc;
@@ -22,8 +20,8 @@
   </style>
 </head>
 <body>
-<div layout:fragment="content" class="container">
-  <h1 class="text-center my-4">상품 관리 페이지</h1>
+<div layout:fragment="content" class="container my-3">
+  <h1>상품 관리 페이지</h1>
 
   <!-- 상품 추가 폼 -->
   <div class="form-container">
