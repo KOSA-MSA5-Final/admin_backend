@@ -4,7 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Animal Page</title>
+    <title>Allergy Page</title>
+    <!-- Bootstrap CSS -->
+    <style>
+        body {
+            font-family: 'GmarketSansMedium', sans-serif;
+        }
+        .form-container {
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </head>
 <body>
 <div layout:fragment="content" class="container my-3">
@@ -14,6 +27,7 @@
     <a href="/admin/animal/sub" class="btn btn-info">동물 소분류 리스트 페이지로 이동</a>
 
     <!-- 동물 리스트 -->
+    <div class="form-container mt-4">
     <h3 class="mt-4">동물 리스트</h3>
     <table class="table table-striped">
         <thead>
@@ -35,6 +49,7 @@
         </tr>
         </tbody>
     </table>
+    </div>
 
 </div>
 </body>

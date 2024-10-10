@@ -6,13 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Allergy Management</title>
   <!-- Bootstrap CSS -->
-  <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
   <style>
     body {
       font-family: 'GmarketSansMedium', sans-serif;
     }
     .form-container {
-      max-width: 600px;
       margin: 50px auto;
       padding: 20px;
       border: 1px solid #ccc;
@@ -22,18 +20,18 @@
   </style>
 </head>
 <body>
-<div layout:fragment="content" class="container">
-  <h1 class="text-center my-4">알러지 추가</h1>
+<div layout:fragment="content" class="container my-3">
+  <h1>알러지 추가</h1>
 
   <!-- 동물 소분류 추가 폼 -->
-  <div class="form-container mt-4">
+  <div class="form-container">
     <h3>소분류 동물 추가</h3>
     <form th:action="@{/admin/allergy/add/allergy}" method="post">
-      <div class="mb-3">
+      <div class="mb-4">
         <label for="allergyName" class="form-label">알러지 이름</label>
         <input type="text" class="form-control" id="allergyName" name="allergyName" placeholder="알러지 이름을 입력하세요." required>
       </div>
-      <div class="mb-3">
+      <div class="mb-4">
         <label for="allergyType" class="form-label">알러지 대분류</label>
         <select class="form-select" id="allergyType" name="allergyType" required>
           <option value="" disabled selected>알러지 대분류를 선택하세요</option>
