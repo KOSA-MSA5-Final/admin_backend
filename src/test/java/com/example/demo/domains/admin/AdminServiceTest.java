@@ -24,7 +24,7 @@ public class AdminServiceTest {
     public void setUp() {
         // 데이터 추가
         Admin admin = new Admin();
-        admin.setName("a");
+        admin.setName("admin");
         admin.setPassword("1234");
         adminService.save(admin);
     }
