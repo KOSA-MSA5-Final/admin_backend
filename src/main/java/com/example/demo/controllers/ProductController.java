@@ -8,11 +8,14 @@ import com.example.demo.domains.product.service.interfaces.ProductService;
 import com.example.demo.domains.profile_medical.entity.Animal;
 import com.example.demo.domains.profile_medical.entity.Hospital;
 import com.example.demo.domains.profile_medical.service.impls.AnimalServiceImpl;
+import com.example.demo.util.AwsS3Service;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import com.example.demo.domains.profile_medical.service.interfaces.AnimalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
@@ -31,6 +34,8 @@ public class ProductController {
     private final ProductImgServiceImps productImgService;
 
     private final ProductDetailImgServiceImps productDetailImgService;
+
+    private final AwsS3Service awsS3Service;
 
     @GetMapping("/add")
     public String showAddProduct(Model model) {
@@ -51,19 +56,25 @@ public class ProductController {
                              String productWeight,
                              String productAge,
                              String productFunction,
-                             String productImageUrls,
-                             String productDetailImageUrls,
+                             List<MultipartFile> productImageUrls,
+                             List<MultipartFile> productDetailImageUrls,
+                             //String productImageUrls,
+                             //String productDetailImageUrls,
+                             String productSubtype, // 상품 상세 타입 추가
+
                              RedirectAttributes redirectAttributes) {
 
-        // 이미지 URL들을 콤마로 분리하여 List<String>으로 변환
-        String[] imageUrlList = productImageUrls.split(",");
-        String[] detailImageUrlList = productDetailImageUrls.split(",");
+        // 이미지 파일을 S3에 업로드하고 URL을 가져오는 로직
+        //String productImageUrl = uploadImageToS3(productImage); // 단일 이미지 업로드
+        List<String> productImage = awsS3Service.uploadFile(productImageUrls);
+        List<String> detailImageUrls = awsS3Service.uploadFile(productDetailImageUrls); // 다중 이미지 업로드
 
         // 새로운 Product 객체 생성
         Product product = new Product();
         product.setName(productName);
         product.setMaker(productMaker);
         product.setType(productType);
+        product.setSubtype(productSubtype); // product의 상세 타입 설정
         product.setPrice(productPrice);
         Animal animal = animalService.findAnimalByName(animalName);
         product.setAnimal(animal);
@@ -85,11 +96,11 @@ public class ProductController {
             redirectAttributes.addFlashAttribute("alertType", "error");
         }
 
-        for(String img : imageUrlList){
+        for(String img : productImage){
             productImgService.saveProductImg(img, saveProduct);
         }
 
-        for(String detailImg : detailImageUrlList){
+        for(String detailImg : detailImageUrls){
             productDetailImgService.saveProductDetailImg(detailImg, saveProduct);
         }
 
@@ -145,7 +156,14 @@ public class ProductController {
     @PostMapping("/update")
     public String updateProduct(@ModelAttribute Product product) {
         //productService.update(product);
+        productService.deleteProduct(product.getId());
+        productService.saveProduct(product);
         return "redirect:/admin/product"; // 수정 후 상품 목록으로 리디렉션
+    }
+
+    @GetMapping("/main")
+    public String productMain(Model model) {
+        return "product/product-main";
     }
 
 }

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Disease Page</title>
+    <title>Allergy Page</title>
     <!-- Bootstrap CSS -->
     <style>
         body {
@@ -21,27 +21,34 @@
 </head>
 <body>
 <div layout:fragment="content" class="container my-3">
-    <h1>병명 페이지</h1>
-    <p>여기에 질환 관련 내용을 작성하세요.</p>
-    <a href="/admin/disease/add" class="btn btn-info">병명 추가 페이지로 이동</a>
-    <a href="/admin/disease/sub" class="btn btn-info">소분류 병명 리스트 페이지로 이동</a>
+    <h1>동물 리스트 페이지</h1>
 
-    <!-- 병명 리스트 -->
+    <!-- 소분류 동물 리스트 -->
     <div class="form-container mt-4">
-    <h3 class="mt-4">병명 리스트</h3>
+    <h3 class="mt-4">소분류 동물 리스트</h3>
+    <form action="sub" method="get">
+        <select name="type" class="form-control" onchange="this.form.submit()">
+            <option value="" disabled selected>대분류 선택</option>
+            <option value="">전체</option>
+            <!-- 대분류 동물 리스트는 서버에서 받아온다 -->
+            <option th:each="category : ${animalCategories}" th:value="${category.name}" th:text="${category.name}"></option>
+        </select>
+    </form>
     <table class="table table-striped">
         <thead>
         <tr>
-            <th>대분류 병명</th>
+            <th>대분류 동물</th>
+            <th>동물 이름</th>
         </tr>
         </thead>
         <tbody>
-        <!-- Thymeleaf 반복문을 사용하여 병명 리스트 출력 -->
-        <tr th:each="disease : ${diseases}">
-            <td th:text="${disease.name}">병명</td>
+        <!-- Thymeleaf 반복문을 사용하여 소분류 동물 리스트 출력 -->
+        <tr th:each="subcategory : ${subcategories}">
+            <td th:text="${subcategory.animal.name}">대분류 동물</td>
+            <td th:text="${subcategory.name}">소분류 동물 이름</td>
             <td>
                 <!-- 삭제 버튼 추가 -->
-                <form th:action="@{'/admin/disease/delete/' + ${disease.id}}" method="post">
+                <form th:action="@{'/admin/animal/sub/delete/' + ${subcategory.id}}" method="post">
                     <input type="hidden" name="_method" value="delete"/> <!-- DELETE 요청을 위한 hidden input -->
                     <button type="submit" class="btn btn-danger">삭제</button>
                 </form>

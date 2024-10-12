@@ -43,4 +43,7 @@ public class AllergyServiceImps implements AllergyService {
         allergyRepository.deleteById(id);
     }
 
+    public List<Allergy> findByType(String type) {
+        return allergyRepository.findByType(type);
+    }
 }

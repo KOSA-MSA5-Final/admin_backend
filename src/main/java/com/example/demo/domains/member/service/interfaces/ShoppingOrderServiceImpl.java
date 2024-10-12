@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * author : 나선주
@@ -44,6 +45,18 @@ public class ShoppingOrderServiceImpl implements ShoppingOrderService {
             return true;
         }catch(Exception e){
             return false;
+        }
+    }
+
+    public List<ShoppingOrder> findOrdersByStatus(String status) {
+        return shoppingOrderRepository.findByisAllShipping(status);
+    }
+
+    public void updateOrderStatus(List<Long> orderIds, String newStatus) {
+        // 주문 ID 리스트를 순회하며 상태를 업데이트
+        for (Long orderId : orderIds) {
+            Optional<ShoppingOrder> optionalOrder = shoppingOrderRepository.findById(orderId); // 주문을 찾아옴
+            optionalOrder.ifPresent(order -> order.setIsAllShipping(newStatus)); // 새로운 상태로 업데이트
         }
     }
 }

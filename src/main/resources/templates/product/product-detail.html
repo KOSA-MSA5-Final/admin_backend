@@ -4,7 +4,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Product Detail Page</title>
+  <title>Disease Page</title>
+  <!-- Bootstrap CSS -->
+  <style>
+    body {
+      font-family: 'GmarketSansMedium', sans-serif;
+    }
+    .form-container {
+      margin: 50px auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+  </style>
 </head>
 <body>
 <div layout:fragment="content" class="container my-3">
@@ -14,6 +27,7 @@
   <p><strong>상품 이름:</strong> <span th:text="${product.name}"></span></p>
   <p><strong>상품 브랜드:</strong> <span th:text="${product.maker}"></span></p>
   <p><strong>상품 타입:</strong> <span th:text="${product.type}"></span></p>
+  <p><strong>상품 상세 타입:</strong> <span th:text="${product.subtype}"></span></p>
   <p><strong>상품 가격:</strong> <span th:text="${product.price}"></span></p>
   <p><strong>동물:</strong> <span th:text="${product.animal.name}"></span></p>
   <p><strong>원산지:</strong> <span th:text="${product.origin}"></span></p>

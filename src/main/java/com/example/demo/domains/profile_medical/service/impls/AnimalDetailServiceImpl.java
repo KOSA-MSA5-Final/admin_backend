@@ -70,4 +70,12 @@ public class AnimalDetailServiceImpl implements AnimalDetailService {
     public List<AnimalDetail> getAnimalDetailsByAnimalName(String animalName) {
         return animalDetailRepository.findAnimalDetailByAnimalName(animalName);
     }
+
+    public List<AnimalDetail> findAll() {
+        return animalDetailRepository.findAll();
+    }
+
+    public void deleteById(Long id) {
+        animalDetailRepository.deleteById(id);
+    }
 }

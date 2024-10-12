@@ -21,4 +21,5 @@ import java.util.List;
 
 public interface AllergyRepository  extends JpaRepository<Allergy, Long> , AllergyRepositoryCustom {
 
+    List<Allergy> findByType(String type);
 }
