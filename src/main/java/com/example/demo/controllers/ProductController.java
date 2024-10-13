@@ -153,8 +153,8 @@ public class ProductController {
             model.addAttribute("allergies", allergyService.getAllAllergies());
             model.addAttribute("diseases", diseaseService.findAllDiseases());
 
-            model.addAttribute("allergies", allergies);
-            model.addAttribute("diseases", diseases);
+            model.addAttribute("select_allergies", allergies);
+            model.addAttribute("select_diseases", diseases);
 
             return "product/product-edit"; // edit.html
         } else {
