@@ -105,7 +105,10 @@
       <div class="mb-3">
         <label for="productAllergies" class="form-label">알러지 목록</label>
         <select class="form-select" id="productAllergies" name="productAllergies" multiple required>
-          <option th:each="allergy : ${allergies}" th:value="${allergy.id}" th:text="${allergy.name}" th:selected="${allergies.contains(allergy.id)}"></option>
+          <option th:each="allergy : ${allergies}"
+                  th:value="${allergy.id}"
+                  th:text="${allergy.name}"
+                  th:selected="${select_allergies.contains(allergy.id)}"></option>
         </select>
         <small class="form-text text-muted">Ctrl 키를 눌러 여러 개 선택이 가능합니다.</small>
       </div>
@@ -113,7 +116,10 @@
       <div class="mb-3">
         <label for="diseaseNames" class="form-label">병명 목록</label>
         <select class="form-select" id="diseaseNames" name="diseaseNames" multiple required>
-          <option th:each="disease : ${diseases}" th:value="${disease.id}" th:text="${disease.name}" th:selected="${diseases.contains(disease.id)}"></option>
+          <option th:each="disease : ${diseases}"
+                  th:value="${disease.id}"
+                  th:text="${disease.name}"
+                  th:selected="${select_diseases.contains(disease.id)}"></option>
         </select>
         <small class="form-text text-muted">Ctrl 키를 눌러 여러 개 선택이 가능합니다.</small>
       </div>
