@@ -162,11 +162,9 @@ public class ProductController {
         }
     }
 
-    @PostMapping("/update")
-    public String updateProduct(@ModelAttribute Product product) {
-        //productService.update(product);
-        productService.deleteProduct(product.getId());
-        productService.saveProduct(product);
+    @PostMapping("/update/{id}")
+    public String updateProduct(@PathVariable Long id, @ModelAttribute ProductDTO productDto) {
+        productService.update(id, productDto);
         return "redirect:/admin/product"; // 수정 후 상품 목록으로 리디렉션
     }
 

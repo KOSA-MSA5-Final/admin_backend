@@ -2,6 +2,8 @@ package com.example.demo.controllers;
 
 import com.example.demo.domains.disease.entity.DiseaseNames;
 import com.example.demo.domains.disease.entity.DiseaseSub;
+import com.example.demo.domains.disease.entity.NewDisease;
+import com.example.demo.domains.disease.service.impls.NewDiseaseServiceImpl;
 import com.example.demo.domains.disease.service.interfaces.DiseaseNamesService;
 import com.example.demo.domains.disease.service.interfaces.DiseaseSubService;
 import jakarta.servlet.http.HttpSession;
@@ -11,7 +13,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/admin/disease")
@@ -20,6 +25,7 @@ public class DiseaseController {
 
     private final DiseaseNamesService diseaseNamesService;
     private final DiseaseSubService diseaseSubService;
+    private final NewDiseaseServiceImpl newDiseaseService;
 
     @GetMapping("/add")
     public String showAddDiseaseForm(Model model) {
@@ -104,5 +110,24 @@ public class DiseaseController {
         return "redirect:/admin/disease/sub"; // 삭제 후 리스트 페이지로 리다이렉트
     }
 
+    @GetMapping("/new")
+    public String newDiseaseList(Model model, HttpSession session) {
+        // 세션에 user 속성이 없는 경우 로그인 페이지로 리다이렉트
+        if (session.getAttribute("user") == null) {
+            return "redirect:/login";
+        }
+
+        List<NewDisease> newDiseaseList = newDiseaseService.findAllNewDiseases();
+
+        model.addAttribute("newDiseaseList", newDiseaseList);
+        return "disease/disease-new"; // 소분류 리스트 페이지로 이동
+    }
+
+    // 소분류 병명 삭제
+    @PostMapping("/admin/disease/new/delete/{id}")
+    public String deleteNewCategory(@PathVariable Long id) {
+        newDiseaseService.deleteNewDiseaseById(id);
+        return "redirect:/admin/disease/new"; // 삭제 후 리스트 페이지로 리다이렉트
+    }
 
 }
