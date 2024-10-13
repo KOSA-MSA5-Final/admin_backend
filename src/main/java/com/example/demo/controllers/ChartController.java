@@ -58,7 +58,7 @@ public class ChartController {
 
     @GetMapping("/3")
     public String showChart3(Model model) {
-        List<Hospital> hospitals = hospitalService.getNotOurHospital();
+        List<Hospital> hospitals = hospitalService.getAllOurHospitals();
         System.out.println(hospitals.getFirst().getName());
 
         // 구별 카운트를 저장할 맵
@@ -78,7 +78,7 @@ public class ChartController {
 
     // 주소에서 구를 추출하는 메서드
     private static String extractDistrict(String address) {
-        String regex = "서울특별시\\s([^\\s]+구)"; // 서울특별시 뒤에 '구'로 끝나는 단어 추출
+        String regex = "서울\\s([^\\s]+구)"; // 서울 뒤에 '구'로 끝나는 단어 추출
         java.util.regex.Pattern pattern = java.util.regex.Pattern.compile(regex);
         java.util.regex.Matcher matcher = pattern.matcher(address);
         if (matcher.find()) {
