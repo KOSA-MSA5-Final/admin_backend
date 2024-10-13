@@ -5,7 +5,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Product Management</title>
-  <!-- Bootstrap CSS -->
   <style>
     body {
       font-family: 'GmarketSansMedium', sans-serif;
@@ -29,12 +28,13 @@
     <form id="productForm" th:action="@{/admin/product/add/product}" method="post" enctype="multipart/form-data">
       <div class="mb-3">
         <label for="productName" class="form-label">상품 이름</label>
-        <input type="text" class="form-control" id="productName" name="productName" placeholder="상품 이름을 입력하세요." required>
+        <input type="text" class="form-control" id="productName" name="productName" required>
       </div>
       <div class="mb-3">
         <label for="productMaker" class="form-label">상품 브랜드</label>
-        <input type="text" class="form-control" id="productMaker" name="productMaker" placeholder="상품 브랜드를 입력하세요." required>
+        <input type="text" class="form-control" id="productMaker" name="productMaker" required>
       </div>
+
       <div class="mb-3">
         <label for="productType" class="form-label">상품 타입</label>
         <select class="form-control" id="productType" name="productType" required>
@@ -44,17 +44,18 @@
           <option value="supplement">영양제</option>
         </select>
       </div>
+
       <!-- 상품 상세 타입 추가 -->
       <div class="mb-3">
         <label for="productSubtype" class="form-label">상품 상세 타입</label>
         <input type="text" class="form-control" id="productSubtype" name="productSubtype" placeholder="상세 타입을 입력하세요." required>
       </div>
+
       <div class="mb-3">
         <label for="productPrice" class="form-label">상품 가격</label>
         <input type="number" class="form-control" id="productPrice" name="productPrice" placeholder="상품 가격을 입력하세요." required>
       </div>
 
-      <!-- 동물 종류 리스트 -->
       <div class="mb-3">
         <label for="animalName" class="form-label">동물 선택</label>
         <select class="form-select" id="animalName" name="animalName" required>
@@ -93,6 +94,28 @@
       </div>
 
       <div class="mb-3">
+        <label for="productAllergies" class="form-label">알러지 목록</label>
+        <select class="form-select" id="productAllergies" name="productAllergies" multiple required>
+          <option th:each="allergy : ${allergies}" th:value="${allergy.id}" th:text="${allergy.name}"></option>
+        </select>
+        <small class="form-text text-muted">Ctrl 키를 눌러 여러 개 선택이 가능합니다.</small>
+      </div>
+
+      <!-- 병명 추가 -->
+      <div class="mb-3">
+        <label for="diseaseNames" class="form-label">병명 목록</label>
+        <select class="form-select" id="diseaseNames" name="diseaseNames" multiple required>
+          <option th:each="disease : ${diseases}" th:value="${disease.id}" th:text="${disease.name}"></option>
+        </select>
+        <small class="form-text text-muted">Ctrl 키를 눌러 여러 개 선택이 가능합니다.</small>
+      </div>
+
+      <div class="mb-3">
+        <label for="productMainImageUrls" class="form-label">대표 이미지 업로드</label>
+        <input type="file" class="form-control" id="productMainImageUrls" name="productMainImageUrls" accept="image/*">
+      </div>
+
+      <div class="mb-3">
         <label for="productImageUrls" class="form-label">이미지 업로드</label>
         <input type="file" class="form-control" id="productImageUrls" name="productImageUrls" accept="image/*" multiple required>
       </div>
@@ -105,8 +128,6 @@
       <button type="submit" class="btn btn-primary">추가</button>
     </form>
   </div>
-
 </div>
-
 </body>
 </html>

@@ -71,4 +71,7 @@ public class Product {
     @Column(name = "product_function")
     private String function;
 
+    @Column(name = "product_main_image_url")
+    private String main_image_url;
+
 }

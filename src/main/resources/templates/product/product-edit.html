@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Product Management</title>
-  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
   <style>
     body {
       font-family: 'GmarketSansMedium', sans-serif;
@@ -18,207 +18,127 @@
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
   </style>
-  <script>
-    // 이미지 URL 추가 함수
-    function addImageUrl() {
-      console.log("버튼 눌림");
-      const imageUrlInput = document.getElementById('productImageUrl');
-      const imageUrl = imageUrlInput.value.trim();
-
-      // URL이 비어있지 않은 경우에만 추가
-      if (imageUrl) {
-        // 리스트에 추가
-        const imageUrlList = document.getElementById('imageUrlList');
-        const listItem = document.createElement('li');
-        listItem.className = 'list-group-item';
-        listItem.innerHTML = imageUrl + '<span class="delete-btn" onclick="deleteImageUrl(this, \'' + imageUrl + '\')">삭제</span>';
-        imageUrlList.appendChild(listItem);
-
-        // 입력 필드 비우기
-        imageUrlInput.value = '';
-
-        // 추가된 URL을 숨겨진 필드에 저장
-        const hiddenImageUrls = document.getElementById('hiddenImageUrls');
-        const existingUrls = hiddenImageUrls.value ? hiddenImageUrls.value.split(',') : [];
-        existingUrls.push(imageUrl);
-        hiddenImageUrls.value = existingUrls.join(',');
-      }
-    }
-
-    function addDetailImageUrl() {
-      console.log("버튼 눌림");
-      const imageUrlInput = document.getElementById('productDetailImageUrl');
-      const imageUrl = imageUrlInput.value.trim();
-
-      // URL이 비어있지 않은 경우에만 추가
-      if (imageUrl) {
-        // 리스트에 추가
-        const imageUrlList = document.getElementById('detailImageUrlList');
-        const listItem = document.createElement('li');
-        listItem.className = 'list-group-item';
-        listItem.innerHTML = imageUrl + '<span class="delete-btn" onclick="deleteDetailImageUrl(this, \'' + imageUrl + '\')">삭제</span>';
-        imageUrlList.appendChild(listItem);
-
-        // 입력 필드 비우기
-        imageUrlInput.value = '';
-
-        // 추가된 URL을 숨겨진 필드에 저장
-        const hiddenImageUrls = document.getElementById('hiddenDetailImageUrls');
-        const existingUrls = hiddenImageUrls.value ? hiddenImageUrls.value.split(',') : [];
-        existingUrls.push(imageUrl);
-        hiddenImageUrls.value = existingUrls.join(',');
-      }
-    }
-
-    // 이미지 URL 삭제 함수
-    function deleteImageUrl(element, imageUrl) {
-      const hiddenImageUrls = document.getElementById('hiddenImageUrls');
-      let existingUrls = hiddenImageUrls.value.split(',');
-
-      // 이미지 URL을 배열에서 제거
-      existingUrls = existingUrls.filter(url => url !== imageUrl);
-      hiddenImageUrls.value = existingUrls.join(',');
-
-      // 리스트에서 항목 삭제
-      element.parentElement.remove();
-    }
-
-    // 상세 이미지 URL 삭제 함수
-    function deleteDetailImageUrl(element, imageUrl) {
-      const hiddenImageUrls = document.getElementById('hiddenDetailImageUrls');
-      let existingUrls = hiddenImageUrls.value.split(',');
-
-      // 이미지 URL을 배열에서 제거
-      existingUrls = existingUrls.filter(url => url !== imageUrl);
-      hiddenImageUrls.value = existingUrls.join(',');
-
-      // 리스트에서 항목 삭제
-      element.parentElement.remove();
-    }
-
-    // DOMContentLoaded 이벤트 리스너
-    document.addEventListener('DOMContentLoaded', function() {
-      document.getElementById('addImageButton').addEventListener('click', addImageUrl);
-      document.getElementById('addDetailImageButton').addEventListener('click', addDetailImageUrl);
-    });
-  </script>
-
 </head>
 <body>
 <div layout:fragment="content" class="container my-3">
-  <h1>상품 수정 페이지</h1>
+  <h1>상품 업데이트 페이지</h1>
 
-  <!-- 병원 추가 폼 -->
+  <!-- 상품 업데이트 폼 -->
   <div class="form-container">
-    <h3>상품 추가</h3>
-    <form th:action="@{/admin/product/update}" method="post">
-      <input type="hidden" th:name="id" th:value="${product.id}" />
+    <h3>상품 업데이트</h3>
+    <form id="updateProductForm" th:action="@{/admin/product/update/{id}(id=${product.id})}" method="post" enctype="multipart/form-data">
+      <input type="hidden" name="id" th:value="${product.id}" />
+
       <div class="mb-3">
         <label for="productName" class="form-label">상품 이름</label>
         <input type="text" class="form-control" id="productName" name="productName" th:value="${product.name}" required>
       </div>
+
       <div class="mb-3">
         <label for="productMaker" class="form-label">상품 브랜드</label>
         <input type="text" class="form-control" id="productMaker" name="productMaker" th:value="${product.maker}" required>
       </div>
+
       <div class="mb-3">
         <label for="productType" class="form-label">상품 타입</label>
-        <select class="form-control" id="productType" name="productType" required>
-          <option value="" disabled selected>상품 타입을 선택하세요.</option>
-          <option value="feed">사료</option>
-          <option value="snack">간식</option>
-          <option value="supplement">영양제</option>
+        <select class="form-select" id="productType" name="productType" required>
+          <option value="" disabled>상품 타입을 선택하세요.</option>
+          <option value="feed" th:selected="${product.type == 'feed'}">사료</option>
+          <option value="snack" th:selected="${product.type == 'snack'}">간식</option>
+          <option value="supplement" th:selected="${product.type == 'supplement'}">영양제</option>
         </select>
       </div>
-      <-- 상품 상세 타입 추가 -->
+
       <div class="mb-3">
         <label for="productSubtype" class="form-label">상품 상세 타입</label>
         <input type="text" class="form-control" id="productSubtype" name="productSubtype" th:value="${product.subtype}" placeholder="상세 타입을 입력하세요." required>
       </div>
+
       <div class="mb-3">
         <label for="productPrice" class="form-label">상품 가격</label>
-        <input type="text" class="form-control" id="productPrice" name="productPrice" th:value="${product.price}" required>
+        <input type="number" class="form-control" id="productPrice" name="productPrice" th:value="${product.price}" placeholder="상품 가격을 입력하세요." required>
       </div>
 
-      <!-- 동물 종류 리스트 -->
       <div class="mb-3">
         <label for="animalName" class="form-label">동물 선택</label>
         <select class="form-select" id="animalName" name="animalName" required>
-          <option value="" th:text="${product.animal.name}">대분류 동물을 선택하세요</option>
-          <option th:each="animal : ${animals}" th:value="${animal.name}" th:text="${animal.name}"></option>
+          <option value="" disabled>대분류 동물을 선택하세요</option>
+          <option th:each="animal : ${animals}" th:value="${animal.name}" th:text="${animal.name}" th:selected="${animal.name == product.animal.name}"></option>
         </select>
       </div>
 
       <div class="mb-3">
         <label for="productOrigin" class="form-label">원산지</label>
-        <input type="text" class="form-control" id="productOrigin" name="productOrigin" th:value="${product.origin}" required>
+        <input type="text" class="form-control" id="productOrigin" name="productOrigin" th:value="${product.origin}" placeholder="원산지를 입력하세요." required>
       </div>
+
       <div class="mb-3">
         <label for="productAllRawmaterial" class="form-label">전체 사용 원료</label>
-        <input type="text" class="form-control" id="productAllRawmaterial" name="productAllRawmaterial" th:value="${product.all_rawmaterial}" required>
+        <input type="text" class="form-control" id="productAllRawmaterial" name="productAllRawmaterial" th:value="${product.all_rawmaterial}" placeholder="사용원료를 입력하세요." required>
       </div>
+
       <div class="mb-3">
         <label for="productIngredient" class="form-label">영양성분</label>
-        <input type="text" class="form-control" id="productIngredient" name="productIngredient" th:value="${product.ingredient}" required>
+        <input type="text" class="form-control" id="productIngredient" name="productIngredient" th:value="${product.ingredient}" placeholder="영양성분을 입력하세요." required>
       </div>
+
       <div class="mb-3">
         <label for="productCalories" class="form-label">칼로리</label>
-        <input type="text" class="form-control" id="productCalories" name="productCalories" th:value="${product.calories}" required>
+        <input type="number" class="form-control" id="productCalories" name="productCalories" th:value="${product.calories}" placeholder="상품 칼로리를 입력하세요." required>
       </div>
+
       <div class="mb-3">
         <label for="productWeight" class="form-label">실 중량</label>
-        <input type="text" class="form-control" id="productWeight" name="productWeight" th:value="${product.weight}" required>
+        <input type="number" class="form-control" id="productWeight" name="productWeight" th:value="${product.weight}" placeholder="상품 실 중량을 입력하세요." required>
       </div>
+
       <div class="mb-3">
         <label for="productAge" class="form-label">연령대</label>
-        <input type="text" class="form-control" id="productAge" name="productAge" th:value="${product.age_group}" required>
+        <input type="text" class="form-control" id="productAge" name="productAge" th:value="${product.age_group}" placeholder="상품 사용 연령대를 입력하세요." required>
       </div>
+
       <div class="mb-3">
         <label for="productFunction" class="form-label">기능</label>
-        <input type="text" class="form-control" id="productFunction" name="productFunction" th:value="${product.function}" required>
+        <input type="text" class="form-control" id="productFunction" name="productFunction" th:value="${product.function}" placeholder="상품 기능을 입력하세요." required>
       </div>
 
       <div class="mb-3">
-        <label for="productImageUrl" class="form-label">이미지 추가</label>
-        <input type="text" class="form-control" id="productImageUrl" name="productImageUrl" placeholder="이미지 URL을 입력하세요.">
-        <button id="addImageButton" type="button">이미지 추가</button>
+        <label for="productAllergies" class="form-label">알러지 목록</label>
+        <select class="form-select" id="productAllergies" name="productAllergies" multiple required>
+          <option th:each="allergy : ${allergies}" th:value="${allergy.id}" th:text="${allergy.name}" th:selected="${allergies.contains(allergy.id)}"></option>
+        </select>
+        <small class="form-text text-muted">Ctrl 키를 눌러 여러 개 선택이 가능합니다.</small>
       </div>
 
       <div class="mb-3">
-        <label for="imageUrlList" class="form-label">추가된 이미지</label>
-        <ul id="imageUrlList" class="list-group">
-          <li th:each="imageUrl : ${imageUrls}">
-            <img th:src="${imageUrl}" alt="상품 이미지"/>
-            <span th:text="${imageUrl}"></span>
-            <span class="delete-btn" onclick="deleteImageUrl(this, '[[${imageUrl}]]')">삭제</span>
-          </li>
-        </ul>
-        <input type="hidden" id="hiddenImageUrls" name="productImageUrls" th:value="${productImageUrls}">
+        <label for="diseaseNames" class="form-label">병명 목록</label>
+        <select class="form-select" id="diseaseNames" name="diseaseNames" multiple required>
+          <option th:each="disease : ${diseases}" th:value="${disease.id}" th:text="${disease.name}" th:selected="${diseases.contains(disease.id)}"></option>
+        </select>
+        <small class="form-text text-muted">Ctrl 키를 눌러 여러 개 선택이 가능합니다.</small>
       </div>
 
       <div class="mb-3">
-        <label for="productDetailImageUrl" class="form-label">세부 이미지 추가</label>
-        <input type="text" class="form-control" id="productDetailImageUrl" name="productDetailImageUrl" placeholder="세부 이미지 URL을 입력하세요.">
-        <button id="addDetailImageButton" type="button">이미지 추가</button>
+        <label for="productMainImageUrls" class="form-label">대표 이미지 업로드</label>
+        <input type="file" class="form-control" id="productMainImageUrls" name="productMainImageUrls" accept="image/*">
       </div>
 
       <div class="mb-3">
-        <label for="detailImageUrlList" class="form-label">추가된 세부 이미지</label>
-        <ul id="detailImageUrlList" class="list-group">
-          <li th:each="imageDetailUrl : ${imageDetailUrls}">
-            <img th:src="${imageDetailUrl}" alt="상품 상세 이미지"/>
-            <span th:text="${imageDetailUrl}"></span>
-            <span class="delete-btn" onclick="deleteDetailImageUrl(this, '[[${imageDetailUrl}]]')">삭제</span>
-          </li>
-        </ul>
-        <input type="hidden" id="hiddenDetailImageUrls" name="productDetailImageUrls" th:value="${productDetailImageUrls}">
+        <label for="productImageUrls" class="form-label">이미지 업로드</label>
+        <input type="file" class="form-control" id="productImageUrls" name="productImageUrls" accept="image/*" multiple>
       </div>
 
-      <button type="submit" class="btn btn-primary">추가</button>
+      <div class="mb-3">
+        <label for="productDetailImageUrls" class="form-label">세부 이미지 업로드</label>
+        <input type="file" class="form-control" id="productDetailImageUrls" name="productDetailImageUrls" accept="image/*" multiple>
+      </div>
+
+      <button type="submit" class="btn btn-primary">업데이트</button>
     </form>
   </div>
-
 </div>
 
+<!-- Bootstrap JS (optional) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

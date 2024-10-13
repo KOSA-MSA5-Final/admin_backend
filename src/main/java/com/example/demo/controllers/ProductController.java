@@ -1,9 +1,9 @@
 package com.example.demo.controllers;
 
+import com.example.demo.domains.disease.service.impls.DiseaseNamesServiceImpl;
+import com.example.demo.domains.product.entity.Allergy;
 import com.example.demo.domains.product.entity.Product;
-import com.example.demo.domains.product.service.impls.ProductDetailImgServiceImps;
-import com.example.demo.domains.product.service.impls.ProductImgServiceImps;
-import com.example.demo.domains.product.service.impls.ProductServiceImps;
+import com.example.demo.domains.product.service.impls.*;
 import com.example.demo.domains.product.service.interfaces.ProductService;
 import com.example.demo.domains.profile_medical.entity.Animal;
 import com.example.demo.domains.profile_medical.entity.Hospital;
@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import com.example.demo.domains.product.dto.ProductDTO;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,56 +36,52 @@ public class ProductController {
 
     private final ProductDetailImgServiceImps productDetailImgService;
 
+    private final AllergyServiceImps allergyService;
+
+    private final RawMaterialServiceImps rawMaterialService;
+
+    private final DiseaseNamesServiceImpl diseaseService;
+
+    private final DiseaseProductServiceImps diseaseProductServiceImps;
+
     private final AwsS3Service awsS3Service;
 
     @GetMapping("/add")
     public String showAddProduct(Model model) {
         model.addAttribute("animals", animalService.getAllAnimals());
+        model.addAttribute("allergies", allergyService.getAllAllergies());
+        model.addAttribute("diseases", diseaseService.findAllDiseases());
         return "product/product-form";
     }
 
     @PostMapping("/add/product")
-    public String addProduct(@RequestParam String productName,
-                             String productMaker,
-                             String productType,
-                             Long productPrice,
-                             String animalName,
-                             String productOrigin,
-                             String productAllRawmaterial,
-                             String productIngredient,
-                             String productCalories,
-                             String productWeight,
-                             String productAge,
-                             String productFunction,
-                             List<MultipartFile> productImageUrls,
-                             List<MultipartFile> productDetailImageUrls,
-                             //String productImageUrls,
-                             //String productDetailImageUrls,
-                             String productSubtype, // 상품 상세 타입 추가
-
+    public String addProduct(@ModelAttribute ProductDTO productDto, Model model,
                              RedirectAttributes redirectAttributes) {
 
         // 이미지 파일을 S3에 업로드하고 URL을 가져오는 로직
         //String productImageUrl = uploadImageToS3(productImage); // 단일 이미지 업로드
-        List<String> productImage = awsS3Service.uploadFile(productImageUrls);
-        List<String> detailImageUrls = awsS3Service.uploadFile(productDetailImageUrls); // 다중 이미지 업로드
+        List<String> productImage = awsS3Service.uploadFile(productDto.getProductImageUrls());
+        List<String> detailImageUrls = awsS3Service.uploadFile(productDto.getProductDetailImageUrls()); // 다중 이미지 업로드
 
         // 새로운 Product 객체 생성
         Product product = new Product();
-        product.setName(productName);
-        product.setMaker(productMaker);
-        product.setType(productType);
-        product.setSubtype(productSubtype); // product의 상세 타입 설정
-        product.setPrice(productPrice);
-        Animal animal = animalService.findAnimalByName(animalName);
+        product.setName(productDto.getProductName());
+        product.setMaker(productDto.getProductMaker());
+        product.setType(productDto.getProductType());
+        product.setSubtype(productDto.getProductSubtype()); // product의 상세 타입 설정
+        product.setPrice(productDto.getProductPrice());
+        Animal animal = animalService.findAnimalByName(productDto.getAnimalName());
         product.setAnimal(animal);
-        product.setOrigin(productOrigin);
-        product.setAll_rawmaterial(productAllRawmaterial);
-        product.setIngredient(productIngredient);
-        product.setCalories(productCalories);
-        product.setWeight(productWeight);
-        product.setAge_group(productAge);
-        product.setFunction(productFunction);
+        product.setOrigin(productDto.getProductOrigin());
+        product.setAll_rawmaterial(productDto.getProductAllRawmaterial());
+        product.setIngredient(productDto.getProductIngredient());
+        product.setCalories(productDto.getProductCalories());
+        product.setWeight(productDto.getProductWeight());
+        product.setAge_group(productDto.getProductAge());
+        product.setFunction(productDto.getProductFunction());
+        List<MultipartFile> m = new ArrayList<>();
+        m.add(productDto.getProductMainImageUrls());
+        product.setMain_image_url(awsS3Service.uploadFile(m).getFirst());
 
         Product saveProduct = productService.saveProduct(product);
 
@@ -94,6 +91,14 @@ public class ProductController {
         }else{
             redirectAttributes.addFlashAttribute("message", "상품 추가에 실패했습니다.");
             redirectAttributes.addFlashAttribute("alertType", "error");
+        }
+
+        for(long i : productDto.getProductAllergies()) {
+            rawMaterialService.createRawMaterial(saveProduct, allergyService.findById(i));
+        }
+
+        for(long i : productDto.getDiseaseNames()){
+            diseaseProductServiceImps.createDiseaseProduct(diseaseService.findById(i), saveProduct);
         }
 
         for(String img : productImage){
@@ -119,10 +124,14 @@ public class ProductController {
         Product product = productService.getProductById(id); // ID로 상품 조회
         List<String> imageUrls = productImgService.getImageUrlsByProduct(product); // 이미지 URL 목록 가져오기
         List<String> imageDetailUrls = productDetailImgService.getDetailImgsUrlsByProduct(product);
+        List<String> allergies = rawMaterialService.getAllagyName(product);
+        List<String> diseases = diseaseProductServiceImps.getDiseaseName(product);
         if (product != null) {
             model.addAttribute("product", product); // 모델에 조회한 상품 추가
             model.addAttribute("imageUrls", imageUrls); // 이미지 URL 목록 추가
             model.addAttribute("imageDetailUrls", imageDetailUrls); // 이미지 URL 목록 추가
+            model.addAttribute("allergies", allergies);
+            model.addAttribute("diseases", diseases);
             return "product/product-detail"; // productDetails.html 뷰로 이동
         } else {
             return "redirect:/admin/product"; // 상품을 찾지 못하면 리스트 페이지로 리다이렉트
@@ -134,18 +143,18 @@ public class ProductController {
         Product product = productService.getProductById(id); // ID로 상품 조회
         List<String> imageUrls = productImgService.getImageUrlsByProduct(product); // 이미지 URL 목록 가져오기
         List<String> imageDetailUrls = productDetailImgService.getDetailImgsUrlsByProduct(product);
+        List<String> allergies = rawMaterialService.getAllagyName(product);
+        List<String> diseases = diseaseProductServiceImps.getDiseaseName(product);
         if (product != null) {
             model.addAttribute("product", product); // 모델에 조회한 상품 추가
             model.addAttribute("animals", animalService.getAllAnimals());
             model.addAttribute("imageUrls", imageUrls); // 이미지 URL 목록 추가
             model.addAttribute("imageDetailUrls", imageDetailUrls); // 이미지 URL 목록 추가
+            model.addAttribute("allergies", allergyService.getAllAllergies());
+            model.addAttribute("diseases", diseaseService.findAllDiseases());
 
-            // List<String>을 쉼표로 묶어서 하나의 문자열로 변환
-            String imageUrlString = String.join(",", imageUrls);
-            String imageDetailUrlString = String.join(",", imageDetailUrls);
-
-            model.addAttribute("productImageUrls", imageUrlString);
-            model.addAttribute("productDetailImageUrls", imageDetailUrlString);
+            model.addAttribute("allergies", allergies);
+            model.addAttribute("diseases", diseases);
 
             return "product/product-edit"; // edit.html
         } else {

@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -64,5 +65,14 @@ public class RawMaterialServiceImps implements RawMaterialService {
     public void deleteRawMaterial(Long id) {
         RawMaterial rawMaterial = getRawMaterialById(id);
         rawMaterialRepository.delete(rawMaterial);
+    }
+
+    public List<String> getAllagyName(Product product) {
+        List<RawMaterial> rawMaterials = rawMaterialRepository.findByProduct(product);
+        List<String> name = new ArrayList<>();
+        for(RawMaterial rawMaterial : rawMaterials) {
+            name.add(rawMaterial.getAllergy().getName());
+        }
+        return name;
     }
 }

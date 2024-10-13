@@ -20,6 +20,6 @@ public class DiseaseProduct {
     private DiseaseNames diseaseNames;
 
     @ManyToOne
-    @JoinColumn(name = "profile_id")  // profile 외래 키
-    private Profile profile;
+    @JoinColumn(name = "product_id")  // profile 외래 키
+    private Product product;
 }

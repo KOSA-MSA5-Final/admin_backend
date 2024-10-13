@@ -3,19 +3,29 @@
       xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>관리자 페이지</title>
-<!--    <script>-->
-<!--    window.onbeforeunload = function() {-->
-<!--        // AJAX 요청을 통해 서버에 세션 종료 요청-->
-<!--        navigator.sendBeacon('/logout');-->
-<!--    };-->
-<!--    </script>-->
+    <!-- Bootstrap CSS -->
+    <style>
+        body {
+            font-family: 'GmarketSansMedium', sans-serif;
+        }
+        .form-container {
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </head>
 <body>
 <!-- 레이아웃의 'content' Fragment를 채웁니다 -->
 <div layout:fragment="content" class="container my-3">
     <h1>관리자 페이지</h1>
     <p>여기에서 관리 기능을 수행할 수 있습니다.</p>
+    <a href="/admin/chart/1" class="btn btn-info">차트 보기</a>
+    <a href="/admin/chart/2" class="btn btn-info">차트 보기2</a>
 </div>
 </body>
 </html>
