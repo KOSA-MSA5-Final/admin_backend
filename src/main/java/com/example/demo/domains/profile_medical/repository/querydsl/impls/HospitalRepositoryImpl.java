@@ -49,4 +49,12 @@ public class HospitalRepositoryImpl implements HospitalRepositoryCustom {
         return query.getResultList();
     }
 
+    @Override
+    public List<Hospital> findNotOurs() {
+        String jpql = "SELECT h FROM Hospital h WHERE h.is_ours = 'F'";
+
+        TypedQuery<Hospital> query = em.createQuery(jpql, Hospital.class);
+        return query.getResultList();
+    }
+
 }

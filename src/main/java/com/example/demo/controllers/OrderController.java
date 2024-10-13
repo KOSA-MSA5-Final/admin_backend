@@ -4,12 +4,14 @@ import com.example.demo.domains.member.entity.ShoppingOrder;
 import com.example.demo.domains.member.entity.ShoppingOrderProduct;
 import com.example.demo.domains.member.service.interfaces.ShoppingOrderProductServiceImpl;
 import com.example.demo.domains.member.service.interfaces.ShoppingOrderServiceImpl;
+import com.example.demo.domains.product.entity.Product;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 import java.util.ArrayList;
@@ -37,9 +39,9 @@ public class OrderController {
         }
 
         // 대시보드 정보
-        long receivedOrdersCount = shoppingOrderProductService.countByShippingStatus("접수 상태");
-        long shippingOrdersCount = shoppingOrderProductService.countByShippingStatus("배송 상태");
-        long completedOrdersCount = shoppingOrderProductService.countByShippingStatus("배송 완료");
+        long receivedOrdersCount = shoppingOrderProductService.countByShippingStatus("대기");
+        long shippingOrdersCount = shoppingOrderProductService.countByShippingStatus("배송중");
+        long completedOrdersCount = shoppingOrderProductService.countByShippingStatus("배송완료");
 
         model.addAttribute("receivedOrdersCount", receivedOrdersCount);
         model.addAttribute("shippingOrdersCount", shippingOrdersCount);
@@ -48,11 +50,9 @@ public class OrderController {
         // 주문 목록 필터링
         List<ShoppingOrder> orders;
         if ("pending".equals(status)) {
-            orders = shoppingOrderService.findOrdersByStatus("접수 상태");
-        } else if ("shipping".equals(status)) {
-            orders = shoppingOrderService.findOrdersByStatus("배송 상태");
+            orders = shoppingOrderService.findOrdersByStatus("F");
         } else if ("completed".equals(status)) {
-            orders = shoppingOrderService.findOrdersByStatus("배송 완료");
+            orders = shoppingOrderService.findOrdersByStatus("T");
         } else {
             orders = shoppingOrderService.findAllOrders(); // 전체 주문
         }
@@ -64,16 +64,23 @@ public class OrderController {
     }
 
     // 주문 상태 일괄 변경 (POST 요청)
-    @PostMapping("/admin/orders/bulk-update")
+    @PostMapping("/bulk-update")
     public String bulkUpdateOrderStatus(
-            @RequestParam List<Long> orderIds,
-            @RequestParam String newStatus,
-            Model model) {
+            @RequestParam("orderIds") List<Long> orderIds) {
 
         // 선택된 주문의 상태를 변경하는 로직
-        shoppingOrderService.updateOrderStatus(orderIds, newStatus);
-//        orderService.updateOrderStatus(orderIds, newStatus);
+        shoppingOrderService.updateOrderStatus(orderIds, "T");
+        System.out.println("***********************************************************************************************************");
 
         return "redirect:/admin/orders"; // 주문 관리 페이지로 리다이렉트
+    }
+
+    @GetMapping("/details/{id}")
+    public String getOrderDetails(@PathVariable Long id, Model model) {
+        ShoppingOrder order = shoppingOrderService.findOrderById(id);
+        List<Product> orderProductList = shoppingOrderProductService.findProductsByOrder(order);
+        model.addAttribute("order", order);
+        model.addAttribute("orderProductList", orderProductList);
+        return "product/order-details";
     }
 }

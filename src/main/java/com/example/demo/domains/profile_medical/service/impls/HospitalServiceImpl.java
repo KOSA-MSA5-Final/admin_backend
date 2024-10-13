@@ -89,4 +89,8 @@ public class HospitalServiceImpl implements HospitalService {
     public List<Hospital> findByIsOurs(String b) {
         return hospitalRepository.findByIsOurs(b);
     }
+
+    public List<Hospital> getNotOurHospital() {
+        return hospitalRepository.findNotOurs();
+    }
 }

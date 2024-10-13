@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/html">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>관리자 페이지</title>
+  <!-- Bootstrap CSS -->
+  <style>
+    body {
+      font-family: 'GmarketSansMedium', sans-serif;
+    }
+    .form-container {
+      margin: 50px auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    canvas {
+      width: 100%; /* 폭 100% */
+      height: 400px; /* 높이 400px */
+    }
+  </style>
+  <!-- Chart.js CDN 추가 -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script th:inline="javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+      var ctx = document.getElementById('barChart').getContext('2d');
+
+      // Thymeleaf에서 districtCount 데이터 전달
+      var districtCount = /*[[${districtCount}]]*/ {};
+
+      // 구와 카운트를 레이블과 데이터로 변환
+      var labels = Object.keys(districtCount); // 구 리스트
+      var data = Object.values(districtCount); // 카운트 데이터
+
+      // 차트 생성
+      var barChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: '구별 병원 수',
+            backgroundColor: '#36A2EB', // 색상
+            data: data
+          }]
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    });
+  </script>
+</head>
+<body>
+<!-- 레이아웃의 'content' Fragment를 채웁니다 -->
+<div layout:fragment="content" class="container my-3">
+  <h2>구별 병원 수</h2>
+  <canvas id="barChart"></canvas>
+</div>
+</body>
+</html>

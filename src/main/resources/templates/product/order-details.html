@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/html">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Disease Page</title>
+  <!-- Bootstrap CSS -->
+  <style>
+    body {
+      font-family: 'GmarketSansMedium', sans-serif;
+    }
+    .form-container {
+      margin: 50px auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body>
+<div layout:fragment="content" class="container my-3">
+  <h1>주문 상세 정보</h1>
+  <div class="card mt-4">
+    <div class="card-body">
+      <h5 class="card-title">주문 ID: <span th:text="${order.id}"></span></h5>
+      <p>주문자 이름: <span th:text="${order.member.name}"></span></p>
+      <p>주문 상태: <span th:text="${order.isAllShipping}"></span></p>
+
+      <!-- 상품 리스트 -->
+      <div class="form-container mt-4">
+        <h3 class="mt-4">상품 리스트</h3>
+        <table class="table table-striped">
+          <thead>
+          <tr>
+            <th>상품 ID</th>
+            <th>상품 이름</th>
+            <th>상품 브랜드</th>
+          </tr>
+          </thead>
+          <tbody>
+          <!-- Thymeleaf 반복문을 사용하여 필터링된 상품 리스트 출력 -->
+          <tr th:each="product : ${orderProductList}">
+            <td th:text="${product.id}">상품 ID</td>
+            <td>
+              <!-- 상품 이름에 링크 추가하여 상세 페이지로 이동 -->
+              <a th:href="@{'/admin/product/details/' + ${product.id}}" th:text="${product.name}">상품 이름</a>
+            </td>
+            <td th:text="${product.maker}">상품 브랜드</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <a href="/admin/orders" class="btn btn-primary mt-3">목록으로 돌아가기</a>
+    </div>
+  </div>
+</div>
+</body>
+</html>

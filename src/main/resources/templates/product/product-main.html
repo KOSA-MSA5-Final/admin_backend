@@ -59,7 +59,6 @@
       <select id="status" name="status" class="form-control">
         <option value="all">전체</option>
         <option value="pending">대기</option>
-        <option value="shipping">배송중</option>
         <option value="completed">배송완료</option>
       </select>
       <button type="submit" class="btn btn-primary mt-2">검색</button>
@@ -68,53 +67,37 @@
 
   <!-- 주문 목록 테이블 -->
   <h3 class="mt-4">주문 목록</h3>
-  <table class="table table-striped">
-    <thead>
-    <tr>
-      <th><input type="checkbox" id="select-all"></th> <!-- 전체 선택 체크박스 -->
-      <th>주문 ID</th>
-      <th>주문자 이름</th>
-      <th>상태</th>
-      <th>상세보기</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="order : ${orders}">
-      <td><input type="checkbox" class="order-checkbox" th:value="${order.id}"></td> <!-- 주문 선택 체크박스 -->
-      <td th:text="${order.id}"></td>
-      <td th:text="${order.member.name}"></td>
-      <td th:text="${order.isAllShipping}"></td>
-      <td>
-        <a th:href="@{'/admin/orders/details/' + ${order.id}}" class="btn btn-info">상세보기</a>
-      </td>
-    </tr>
-    </tbody>
-  </table>
+  <form action="/admin/orders/bulk-update" method="post">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th><input type="checkbox" id="select-all"></th> <!-- 전체 선택 체크박스 -->
+        <th>주문 ID</th>
+        <th>주문자 이름</th>
+        <th>상태</th>
+        <th>상세보기</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="order : ${orders}">
+        <td>
+          <input type="checkbox" name="orderIds" th:value="${order.id}">
+        </td>
+        <td th:text="${order.id}"></td>
+        <td th:text="${order.member.name}"></td>
+        <td th:text="${order.isAllShipping}"></td>
+        <td>
+          <a th:href="@{'/admin/orders/details/' + ${order.id}}" class="btn btn-info">상세보기</a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
 
-  <!-- 일괄 상태 변경 버튼 -->
-  <button id="bulk-update" class="btn btn-success mt-3">선택한 주문 상태 변경</button>
+    <!-- 일괄 상태 변경 버튼 -->
+    <button type="submit" class="btn btn-success mt-3">선택한 주문 상태 변경</button>
+  </form>
 </div>
 
 </div>
-<script>
-  // 전체 선택 체크박스 기능
-  document.getElementById('select-all').addEventListener('change', function() {
-    const checkboxes = document.querySelectorAll('.order-checkbox');
-    checkboxes.forEach(checkbox => {
-      checkbox.checked = this.checked;
-    });
-  });
-
-  // 일괄 상태 변경 버튼 클릭 시 행동 정의
-  document.getElementById('bulk-update').addEventListener('click', function() {
-    const selectedOrders = [];
-    document.querySelectorAll('.order-checkbox:checked').forEach(checkbox => {
-      selectedOrders.push(checkbox.value);
-    });
-    // 여기에서 선택된 주문 ID를 서버로 전송하여 상태를 변경하는 로직을 추가해야 합니다.
-    alert('선택한 주문 ID: ' + selectedOrders.join(', '));
-  });
-</script>
-
 </body>
 </html>

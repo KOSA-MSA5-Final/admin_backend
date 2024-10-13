@@ -20,4 +20,6 @@ public interface HospitalRepositoryCustom {
     List<Hospital> findOurHospitalsByCurrentLocation(String location);
 
     List<Hospital> findByIsOurs(String b);
+
+    List<Hospital> findNotOurs();
 }

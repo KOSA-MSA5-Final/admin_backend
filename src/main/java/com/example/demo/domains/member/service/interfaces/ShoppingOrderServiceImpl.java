@@ -3,9 +3,11 @@ package com.example.demo.domains.member.service.interfaces;
 import com.example.demo.domains.member.entity.ShoppingOrder;
 import com.example.demo.domains.member.repository.ShoppingOrderRepository;
 import com.example.demo.domains.member.service.impls.ShoppingOrderService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.beans.Transient;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,11 +54,20 @@ public class ShoppingOrderServiceImpl implements ShoppingOrderService {
         return shoppingOrderRepository.findByisAllShipping(status);
     }
 
+    @Transactional
     public void updateOrderStatus(List<Long> orderIds, String newStatus) {
         // 주문 ID 리스트를 순회하며 상태를 업데이트
         for (Long orderId : orderIds) {
-            Optional<ShoppingOrder> optionalOrder = shoppingOrderRepository.findById(orderId); // 주문을 찾아옴
-            optionalOrder.ifPresent(order -> order.setIsAllShipping(newStatus)); // 새로운 상태로 업데이트
+            Optional<ShoppingOrder> optionalOrder = shoppingOrderRepository.findById(orderId);
+            optionalOrder.ifPresent(order -> {
+                order.setIsAllShipping(newStatus); // 새로운 상태로 업데이트
+                shoppingOrderRepository.save(order); // 명시적으로 저장
+            });
         }
+    }
+
+    public ShoppingOrder findOrderById(Long id) {
+        Optional<ShoppingOrder> optionalOrder = shoppingOrderRepository.findById(id);
+        return optionalOrder.orElse(null);
     }
 }
