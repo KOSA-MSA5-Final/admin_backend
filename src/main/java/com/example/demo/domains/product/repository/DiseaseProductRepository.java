@@ -1,8 +1,11 @@
 package com.example.demo.domains.product.repository;
 
 import com.example.demo.domains.product.entity.DiseaseProduct;
+import com.example.demo.domains.product.entity.Product;
 import com.example.demo.domains.product.repository.querydsl.customs.DiseaseProductRepositoryCustom;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
 
 /**
  * author : 윤다희
@@ -17,4 +20,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 
 public interface DiseaseProductRepository extends JpaRepository<DiseaseProduct, Long> , DiseaseProductRepositoryCustom {
+    List<DiseaseProduct> findByProduct(Product product);
 }

@@ -46,4 +46,8 @@ public class AllergyServiceImps implements AllergyService {
     public List<Allergy> findByType(String type) {
         return allergyRepository.findByType(type);
     }
+
+    public Allergy findById(long i) {
+        return allergyRepository.findById(i).get();
+    }
 }

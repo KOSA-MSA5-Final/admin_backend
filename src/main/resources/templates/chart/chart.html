@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/html">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>관리자 페이지</title>
+  <!-- Bootstrap CSS -->
+  <style>
+    body {
+      font-family: 'GmarketSansMedium', sans-serif;
+    }
+    .form-container {
+      margin: 50px auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    canvas {
+      width: 100%; /* 폭 100% */
+      height: 400px; /* 높이 400px */
+    }
+  </style>
+  <!-- Chart.js CDN 추가 -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script th:inline="javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+      var ctx = document.getElementById('barChart').getContext('2d');
+
+      // Thymeleaf에서 DTO 데이터 전달
+      var chartData = [[${chartData}]];
+
+      // 병명 리스트와 동물 종류별 데이터셋 준비
+      var labels = [...new Set(chartData.map(item => item.diseaseName))]; // 병명 리스트
+      var datasets = [];
+
+      var colors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF']; // 색상 배열
+
+      var groupedData = {};
+      chartData.forEach(item => {
+        if (!groupedData[item.diseaseName]) {
+          groupedData[item.diseaseName] = {};
+        }
+        groupedData[item.diseaseName][item.animalName] = (groupedData[item.diseaseName][item.animalName] || 0) + 1;
+      });
+
+      var animalTypes = [...new Set(chartData.map(item => item.animalName))]; // 동물 종류 리스트
+
+      animalTypes.forEach((animalType, index) => {
+        var data = labels.map(disease => groupedData[disease][animalType] || 0);
+        datasets.push({
+          label: animalType,
+          backgroundColor: colors[index % colors.length],
+          data: data
+        });
+      });
+
+      // 차트 생성
+      var barChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: datasets
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    });
+    console.log(chartData); // chartData의 내용을 확인
+  </script>
+</head>
+<body>
+<!-- 레이아웃의 'content' Fragment를 채웁니다 -->
+<div layout:fragment="content" class="container my-3">
+  <h2>Animal Type by Disease</h2>
+  <canvas id="barChart"></canvas>
+</div>
+</body>
+</html>

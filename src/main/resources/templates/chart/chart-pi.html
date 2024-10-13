@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko" layout:decorate="~{layout}" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>관리자 페이지</title>
+  <style>
+    body {
+      font-family: 'GmarketSansMedium', sans-serif;
+    }
+    .form-container {
+      margin: 50px auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    canvas {
+      width: 100%; /* 폭 100% */
+      height: 400px; /* 높이 400px */
+    }
+    .btn {
+      margin-left: 10px; /* 드롭다운과 버튼 사이 간격 */
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script th:inline="javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+      var ctxPie = document.getElementById('pieChart').getContext('2d');
+      var pieChart;
+
+      // Thymeleaf에서 DTO 데이터 전달
+      var chartData = [[${chartData}]];
+
+      // 버튼 클릭 시 파이 차트 업데이트
+      document.getElementById('updateChartBtn').addEventListener('click', function () {
+        var selectedDisease = document.getElementById('diseaseSelect').value;
+        updatePieChart(selectedDisease);
+      });
+
+      function updatePieChart(selectedDisease) {
+        var pieData = {};
+        chartData.forEach(item => {
+          if (item.diseaseName === selectedDisease) {
+            pieData[item.animalName] = (pieData[item.animalName] || 0) + 1;
+          }
+        });
+
+        var pieLabels = Object.keys(pieData);
+        var pieCounts = Object.values(pieData);
+
+        // 이전 차트가 존재하면 삭제
+        if (pieChart) {
+          pieChart.destroy();
+        }
+
+        // 파이 차트 그리기
+        pieChart = new Chart(ctxPie, {
+          type: 'pie',
+          data: {
+            labels: pieLabels,
+            datasets: [{
+              data: pieCounts,
+              backgroundColor: pieLabels.map((_, index) => {
+                // 색상 배열 조정
+                var colors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF'];
+                return colors[index % colors.length];
+              })
+            }]
+          },
+          options: {
+            responsive: true
+          }
+        });
+      }
+
+      // 초기 파이 차트: 아무것도 선택되지 않았을 때
+      updatePieChart(''); // 초기 상태에서 빈 차트로 설정
+    });
+  </script>
+</head>
+<body>
+<div layout:fragment="content" class="container my-3">
+  <h2>Animal Type by Disease</h2>
+  <div class="form-group">
+    <select id="diseaseSelect" class="form-control mb-3" style="display: inline-block; width: auto;">
+      <option value="" disabled selected>질병 선택</option>
+      <!-- 질병 목록을 드롭다운에 추가 -->
+      <option th:each="disease : ${list}"
+              th:value="${disease.name}"
+              th:text="${disease.name}"></option>
+    </select>
+    <button id="updateChartBtn" class="btn btn-primary">업데이트</button>
+  </div>
+  <canvas id="pieChart"></canvas>
+</div>
+</body>
+</html>

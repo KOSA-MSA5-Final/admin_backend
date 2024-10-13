@@ -21,43 +21,103 @@
 </head>
 <body>
 <div layout:fragment="content" class="container my-3">
-  <h1>상품 상세 페이지</h1>
+  <h1>상품 상세 보기</h1>
 
-  <p><strong>상품 ID:</strong> <span th:text="${product.id}"></span></p>
-  <p><strong>상품 이름:</strong> <span th:text="${product.name}"></span></p>
-  <p><strong>상품 브랜드:</strong> <span th:text="${product.maker}"></span></p>
-  <p><strong>상품 타입:</strong> <span th:text="${product.type}"></span></p>
-  <p><strong>상품 상세 타입:</strong> <span th:text="${product.subtype}"></span></p>
-  <p><strong>상품 가격:</strong> <span th:text="${product.price}"></span></p>
-  <p><strong>동물:</strong> <span th:text="${product.animal.name}"></span></p>
-  <p><strong>원산지:</strong> <span th:text="${product.origin}"></span></p>
-  <p><strong>상품 원료:</strong> <span th:text="${product.all_rawmaterial}"></span></p>
-  <p><strong>상품 영양성분:</strong> <span th:text="${product.ingredient}"></span></p>
-  <p><strong>상품 칼로리:</strong> <span th:text="${product.calories}"></span></p>
-  <p><strong>사용 연령:</strong> <span th:text="${product.age_group}"></span></p>
-  <p><strong>상품 기능:</strong> <span th:text="${product.function}"></span></p>
+  <div class="form-container">
+    <h3>상품 정보</h3>
 
-  <h2>상품 이미지</h2>
-  <div class="product-images">
-    <ul>
-      <li th:each="imageUrl : ${imageUrls}">
-        <img th:src="${imageUrl}" alt="상품 이미지"/>
-      </li>
-    </ul>
+    <div class="mb-3">
+      <label class="form-label">상품 이름</label>
+      <p class="form-control-plaintext" th:text="${product.name}"></p>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">상품 브랜드</label>
+      <p class="form-control-plaintext" th:text="${product.maker}"></p>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">상품 타입</label>
+      <p class="form-control-plaintext" th:text="${product.type}"></p>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">상품 상세 타입</label>
+      <p class="form-control-plaintext" th:text="${product.subtype}"></p>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">상품 가격</label>
+      <p class="form-control-plaintext" th:text="${product.price} + ' 원'"></p>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">동물 선택</label>
+      <p class="form-control-plaintext" th:text="${product.animal.name}"></p>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">원산지</label>
+      <p class="form-control-plaintext" th:text="${product.origin}"></p>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">전체 사용 원료</label>
+      <p class="form-control-plaintext" th:text="${product.all_rawmaterial}"></p>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">영양성분</label>
+      <p class="form-control-plaintext" th:text="${product.ingredient}"></p>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">칼로리</label>
+      <p class="form-control-plaintext" th:text="${product.calories}"></p>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">실 중량</label>
+      <p class="form-control-plaintext" th:text="${product.weight}"></p>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">연령대</label>
+      <p class="form-control-plaintext" th:text="${product.age_group}"></p>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">기능</label>
+      <p class="form-control-plaintext" th:text="${product.function}"></p>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">알러지 목록</label>
+      <p class="form-control-plaintext d-flex flex-column">
+        <span th:each="allergy : ${allergies}" th:text="${allergy}"></span>
+      </p>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">병명 목록</label>
+      <p class="form-control-plaintext d-flex flex-column">
+        <span th:each="disease : ${diseases}" th:text="${disease}"></span>
+      </p>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">대표 이미지</label>
+      <div>
+        <img th:src="${product.main_image_url}" alt="대표 이미지" style="width: 200px; height: auto;">
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">추가 이미지</label>
+      <div th:each="image : ${imageUrls}">
+        <img th:src="${image}" alt="상품 이미지" style="width: 100px; height: auto;">
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">세부 이미지</label>
+      <div th:each="detailImage : ${imageDetailUrls}">
+        <img th:src="${detailImage}" alt="세부 이미지" style="width: 100px; height: auto;">
+      </div>
+    </div>
+
+    <a href="#" th:href="@{/admin/product/edit/{id}(id=${product.id})}" class="btn btn-primary">수정 하기</a>
+    <a href="#" th:href="@{/admin/product}" class="btn btn-secondary">목록으로 돌아가기</a>
   </div>
-
-  <h2>상품 상세 이미지</h2>
-  <div class="product-images">
-    <ul>
-      <li th:each="imageDetailUrl : ${imageDetailUrls}">
-        <img th:src="${imageDetailUrl}" alt="상품 상세 이미지"/>
-      </li>
-    </ul>
-  </div>
-
-  <a th:href="@{'/admin/product/edit/' + ${product.id}}" class="btn btn-warning">수정</a>
-  <a href="/admin/product" class="btn btn-secondary">목록으로 돌아가기</a>
-
 </div>
+
 </body>
 </html>

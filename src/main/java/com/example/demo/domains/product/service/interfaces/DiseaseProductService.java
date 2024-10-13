@@ -2,6 +2,7 @@ package com.example.demo.domains.product.service.interfaces;
 
 import com.example.demo.domains.disease.entity.DiseaseNames;
 import com.example.demo.domains.product.entity.DiseaseProduct;
+import com.example.demo.domains.product.entity.Product;
 import com.example.demo.domains.profile_medical.entity.Profile;
 
 import java.util.List;
@@ -20,7 +21,7 @@ import java.util.List;
 
 public interface DiseaseProductService {
     // Create a new DiseaseProduct
-    DiseaseProduct createDiseaseProduct(DiseaseNames diseaseNames, Profile profile);
+    DiseaseProduct createDiseaseProduct(DiseaseNames diseaseNames, Product product);
 
     // Get DiseaseProduct by ID
     DiseaseProduct getDiseaseProductById(Long id);
@@ -29,7 +30,7 @@ public interface DiseaseProductService {
     List<DiseaseProduct> getAllDiseaseProducts();
 
     // Update DiseaseProduct
-    DiseaseProduct updateDiseaseProduct(Long id, DiseaseNames diseaseNames, Profile profile);
+    DiseaseProduct updateDiseaseProduct(Long id, DiseaseNames diseaseNames, Product product);
 
     // Delete DiseaseProduct by ID
     void deleteDiseaseProduct(Long id);

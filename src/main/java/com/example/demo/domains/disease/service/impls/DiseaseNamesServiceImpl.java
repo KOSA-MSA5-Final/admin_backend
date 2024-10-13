@@ -66,4 +66,8 @@ public class DiseaseNamesServiceImpl implements DiseaseNamesService {
     public List<DiseaseNames> findCustomDiseaseNames(String condition) {
         return diseaseNamesRepository.findCustomDiseaseNames(condition);
     }
+
+    public DiseaseNames findById(long i) {
+        return diseaseNamesRepository.findById(i).get();
+    }
 }
