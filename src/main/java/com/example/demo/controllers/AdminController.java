@@ -62,7 +62,7 @@ public class AdminController {
         List<DiseaseNames> diseaseNames = diseaseNamesService.findAllDiseases();
         model.addAttribute("diseases", diseaseNames);
 
-        return "/disease/Disease"; // Disease.html 페이지로 이동
+        return "disease/Disease"; // Disease.html 페이지로 이동
     }
 
     @GetMapping("/allergy")
@@ -82,7 +82,7 @@ public class AdminController {
 
         model.addAttribute("allergies", allergies);
 
-        return "/allergy/Allergy"; // Allergy.html 페이지로 이동
+        return "allergy/Allergy"; // Allergy.html 페이지로 이동
     }
 
     @GetMapping("/product")
@@ -108,7 +108,7 @@ public class AdminController {
         model.addAttribute("product", products);
         model.addAttribute("selectedCategory", category);
 
-        return "/product/Product"; // Product.html 페이지로 이동
+        return "product/Product"; // Product.html 페이지로 이동
     }
 
     @GetMapping("/hospital")
@@ -133,6 +133,6 @@ public class AdminController {
 
         model.addAttribute("hospitals", hospitals);
 
-        return "/hospital/Hospital"; // Hospital.html 페이지로 이동
+        return "hospital/Hospital"; // Hospital.html 페이지로 이동
     }
 }
