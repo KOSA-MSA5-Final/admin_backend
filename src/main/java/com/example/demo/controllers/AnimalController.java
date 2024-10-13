@@ -32,7 +32,7 @@ public class AnimalController {
         model.addAttribute("animal", new Animal());
         model.addAttribute("animalDetail", new AnimalDetail());
         model.addAttribute("animals", animalService.getAllAnimals());
-        return "/animal/animal-form"; // animal-form.html로 이동
+        return "animal/animal-form"; // animal-form.html로 이동
     }
 
     // 대분류 동물 추가

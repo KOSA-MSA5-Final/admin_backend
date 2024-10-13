@@ -54,6 +54,7 @@
 //        entityManager.persist(diseaseSub);
 //    }
 //
+
 //    @Test
 //    @Transactional
 //    public void testFindCustomDiseaseSubs_ByPartialCondition() {
@@ -65,4 +66,17 @@
 //        assertEquals("비대성심근증", result.get(0).getName());
 //        assertEquals("순환계통(심장)", result.get(0).getDiseaseNames().getName());  // 대분류 병명 확인
 //    }
+
+////    @Test
+////    @Transactional
+////    public void testFindCustomDiseaseSubs_ByPartialCondition() {
+////        // "비대성"으로 소분류 병명을 검색
+////        List<DiseaseSub> result = diseaseSubRepository.findCustomDiseaseSubs("비대성");
+////
+////        // 결과 확인
+////        assertFalse(result.isEmpty());
+////        assertEquals("비대성심근증", result.get(0).getName());
+////        assertEquals("순환계통(심장)", result.get(0).getDiseaseNames().getName());  // 대분류 병명 확인
+////    }
+
 //}

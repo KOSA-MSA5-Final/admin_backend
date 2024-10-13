@@ -21,7 +21,7 @@ public class AllergyController {
     // 동물 추가 폼 페이지
     @GetMapping("/add")
     public String showAddAllergyForm(Model model) {
-        return "/allergy/allergy-form";
+        return "allergy/allergy-form";
     }
 
     // 알러지 추가 처리 메서드
