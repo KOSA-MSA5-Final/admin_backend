@@ -38,4 +38,4 @@ out/
 
 ### application.properties secret should not be included into github repository ###
 application-secret.properties
-application.properties
+#application.properties
